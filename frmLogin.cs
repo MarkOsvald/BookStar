@@ -8,19 +8,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.OleDb;
+using System.Data.SQLite;
+using Dapper;
+using Dashboard.Tables;
 
 namespace Dashboard
 {
     public partial class frmLogin : Form
     {
+
         public frmLogin()
         {
             InitializeComponent();
         }
-
-        OleDbConnection con = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=db_users.mdb");
-        OleDbCommand cmd = new OleDbCommand();
-        OleDbDataAdapter da = new OleDbDataAdapter();
 
         private void frmLogin_Load(object sender, EventArgs e)
         {
@@ -29,18 +29,16 @@ namespace Dashboard
 
         private void button3_Click(object sender, EventArgs e)
         {
-            con.Open();
-            string login = "SELECT * FROM tbl_users WHERE username= '" + txtUsername.Text + "' and password= '" + txtPassword.Text + "'";
-            cmd = new OleDbCommand(login, con);
-            OleDbDataReader dr = cmd.ExecuteReader();
-
-            
-            if (dr.Read() == true)
+            Users user = new Users
             {
-                //The Form which will appear after loggin in
+                Username = txtUsername.Text,
+                Password = txtPassword.Text
+            };
+            var output = SqlClient.LoginUser(user);
+            if(output)
+            {
                 new Form1().Show();
-                this.Hide();
-
+                Hide();
                 Form1.instance.lab1.Text = txtUsername.Text;
             }
             else

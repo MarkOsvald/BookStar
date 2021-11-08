@@ -163,6 +163,16 @@ namespace Dashboard.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_down_left_24 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-down-left-24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_features_list_24 {
             get {
                 object obj = ResourceManager.GetObject("icons8-features-list-24", resourceCulture);
@@ -196,6 +206,66 @@ namespace Dashboard.Properties {
         internal static System.Drawing.Bitmap icons8_geography_241 {
             get {
                 object obj = ResourceManager.GetObject("icons8-geography-241", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_geography_242 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-geography-242", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_star_24 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-star-24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_star_24__1_ {
+            get {
+                object obj = ResourceManager.GetObject("icons8-star-24 (1)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_star_48 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-star-48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_star_48__1_ {
+            get {
+                object obj = ResourceManager.GetObject("icons8-star-48 (1)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_trash_24 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-trash-24", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -15,16 +15,36 @@ namespace Dashboard
         public frmDiscover()
         {
             InitializeComponent();
+            populateItems();
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        private void populateItems()
         {
+            var listOfBooks = SqlClient.LoadBooks();
+            ListItemDiscover[] listItems = new ListItemDiscover[listOfBooks.Count + 1];
+            int i = 0;
 
-        }
+            foreach (var book in listOfBooks)
+            {
+                i++;
+                listItems[i] = new ListItemDiscover
+                {
+                    Title = book.Book,
+                    Author = book.Author,
+                    Year = book.Year.ToString(),
+                    Rating = book.Rating.ToString()
+                };
 
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
+                if (flowLayoutPanel1.Controls.Count < 0)
+                {
+                    flowLayoutPanel1.Controls.Clear();
+                }
+                else
+                {
+                    flowLayoutPanel1.Controls.Add(listItems[i]);
+                }
 
+            }
         }
     }
 }

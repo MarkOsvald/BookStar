@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Data.OleDb;
+using Dashboard.Tables;
 
 namespace Dashboard
 {
@@ -17,10 +17,6 @@ namespace Dashboard
         {
             InitializeComponent();
         }
-
-        OleDbConnection con = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=db_users.mdb");
-        OleDbCommand cmd = new OleDbCommand();
-        OleDbDataAdapter da = new OleDbDataAdapter();
 
         private void label1_Click(object sender, EventArgs e)
         {
@@ -34,18 +30,19 @@ namespace Dashboard
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (txtUsername.Text == "" && txtPassword.Text == "" && txtComPassword.Text == "")
+            if (txtUsername.Text == "" || txtPassword.Text == "" || txtComPassword.Text == "")
             {
                 MessageBox.Show("Username and Password fields are empty", "Registration Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
             else if (txtPassword.Text == txtComPassword.Text)
             {
-                con.Open();
-                string register = "INSERT INTO tbl_users VALUES ('" + txtUsername.Text + "','" + txtPassword.Text + "')";
-                cmd = new OleDbCommand(register, con);
-                cmd.ExecuteNonQuery();
-                con.Close();
+                Users user = new Users
+                {
+                    Username = txtUsername.Text,
+                    Password = txtPassword.Text
+                };
+                SqlClient.SaveUser(user);
 
                 txtUsername.Text = "";
                 txtPassword.Text = "";

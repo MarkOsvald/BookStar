@@ -33,7 +33,6 @@ namespace Dashboard
             this.txtBookName = new System.Windows.Forms.TextBox();
             this.txtAuthor = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.txtYear = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txtReview = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -41,7 +40,9 @@ namespace Dashboard
             this.label5 = new System.Windows.Forms.Label();
             this.btnAddBookAddBook = new System.Windows.Forms.Button();
             this.btnAddBookClear = new System.Windows.Forms.Button();
+            this.numericUpDownYear = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRating)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownYear)).BeginInit();
             this.SuspendLayout();
             // 
             // label2
@@ -51,9 +52,9 @@ namespace Dashboard
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(164)))), ((int)(((byte)(165)))), ((int)(((byte)(169)))));
             this.label2.Location = new System.Drawing.Point(38, 10);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(77, 17);
+            this.label2.Size = new System.Drawing.Size(83, 17);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Book name";
+            this.label2.Text = "Book name*";
             this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // txtBookName
@@ -63,10 +64,10 @@ namespace Dashboard
             this.txtBookName.Font = new System.Drawing.Font("Nirmala UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtBookName.ForeColor = System.Drawing.SystemColors.InactiveCaption;
             this.txtBookName.Location = new System.Drawing.Point(32, 30);
-            this.txtBookName.Multiline = true;
             this.txtBookName.Name = "txtBookName";
-            this.txtBookName.Size = new System.Drawing.Size(216, 28);
+            this.txtBookName.Size = new System.Drawing.Size(216, 26);
             this.txtBookName.TabIndex = 3;
+            this.txtBookName.TextChanged += new System.EventHandler(this.txtBookName_TextChanged);
             // 
             // txtAuthor
             // 
@@ -75,9 +76,8 @@ namespace Dashboard
             this.txtAuthor.Font = new System.Drawing.Font("Nirmala UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtAuthor.ForeColor = System.Drawing.SystemColors.InactiveCaption;
             this.txtAuthor.Location = new System.Drawing.Point(300, 30);
-            this.txtAuthor.Multiline = true;
             this.txtAuthor.Name = "txtAuthor";
-            this.txtAuthor.Size = new System.Drawing.Size(216, 28);
+            this.txtAuthor.Size = new System.Drawing.Size(216, 26);
             this.txtAuthor.TabIndex = 5;
             // 
             // label1
@@ -90,18 +90,6 @@ namespace Dashboard
             this.label1.Size = new System.Drawing.Size(84, 17);
             this.label1.TabIndex = 4;
             this.label1.Text = "Book author";
-            // 
-            // txtYear
-            // 
-            this.txtYear.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(79)))), ((int)(((byte)(99)))));
-            this.txtYear.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtYear.Font = new System.Drawing.Font("Nirmala UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtYear.ForeColor = System.Drawing.SystemColors.InactiveCaption;
-            this.txtYear.Location = new System.Drawing.Point(558, 30);
-            this.txtYear.Multiline = true;
-            this.txtYear.Name = "txtYear";
-            this.txtYear.Size = new System.Drawing.Size(98, 28);
-            this.txtYear.TabIndex = 7;
             // 
             // label3
             // 
@@ -119,7 +107,7 @@ namespace Dashboard
             // 
             this.txtReview.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(79)))), ((int)(((byte)(99)))));
             this.txtReview.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtReview.Font = new System.Drawing.Font("Nirmala UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtReview.Font = new System.Drawing.Font("Nirmala UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtReview.ForeColor = System.Drawing.SystemColors.InactiveCaption;
             this.txtReview.Location = new System.Drawing.Point(23, 107);
             this.txtReview.Multiline = true;
@@ -156,7 +144,6 @@ namespace Dashboard
             0,
             0});
             this.numericUpDownRating.Name = "numericUpDownRating";
-            this.numericUpDownRating.ReadOnly = true;
             this.numericUpDownRating.Size = new System.Drawing.Size(55, 33);
             this.numericUpDownRating.TabIndex = 10;
             this.numericUpDownRating.Value = new decimal(new int[] {
@@ -172,9 +159,9 @@ namespace Dashboard
             this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(164)))), ((int)(((byte)(165)))), ((int)(((byte)(169)))));
             this.label5.Location = new System.Drawing.Point(29, 87);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(51, 17);
+            this.label5.Size = new System.Drawing.Size(57, 17);
             this.label5.TabIndex = 11;
-            this.label5.Text = "Review";
+            this.label5.Text = "Review*";
             // 
             // btnAddBookAddBook
             // 
@@ -189,6 +176,7 @@ namespace Dashboard
             this.btnAddBookAddBook.TabIndex = 13;
             this.btnAddBookAddBook.Text = "ADD BOOK";
             this.btnAddBookAddBook.UseVisualStyleBackColor = false;
+            this.btnAddBookAddBook.Click += new System.EventHandler(this.btnAddBookAddBook_Click);
             // 
             // btnAddBookClear
             // 
@@ -202,6 +190,27 @@ namespace Dashboard
             this.btnAddBookClear.TabIndex = 14;
             this.btnAddBookClear.Text = "CLEAR";
             this.btnAddBookClear.UseVisualStyleBackColor = false;
+            this.btnAddBookClear.Click += new System.EventHandler(this.btnAddBookClear_Click);
+            // 
+            // numericUpDownYear
+            // 
+            this.numericUpDownYear.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(79)))), ((int)(((byte)(99)))));
+            this.numericUpDownYear.Font = new System.Drawing.Font("Nirmala UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numericUpDownYear.ForeColor = System.Drawing.SystemColors.InactiveCaption;
+            this.numericUpDownYear.Location = new System.Drawing.Point(557, 31);
+            this.numericUpDownYear.Maximum = new decimal(new int[] {
+            2022,
+            0,
+            0,
+            0});
+            this.numericUpDownYear.Name = "numericUpDownYear";
+            this.numericUpDownYear.Size = new System.Drawing.Size(98, 29);
+            this.numericUpDownYear.TabIndex = 15;
+            this.numericUpDownYear.Value = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
             // 
             // frmAddBook
             // 
@@ -209,13 +218,13 @@ namespace Dashboard
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(51)))), ((int)(((byte)(73)))));
             this.ClientSize = new System.Drawing.Size(733, 477);
+            this.Controls.Add(this.numericUpDownYear);
             this.Controls.Add(this.btnAddBookClear);
             this.Controls.Add(this.btnAddBookAddBook);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.numericUpDownRating);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.txtReview);
-            this.Controls.Add(this.txtYear);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txtAuthor);
             this.Controls.Add(this.label1);
@@ -225,6 +234,7 @@ namespace Dashboard
             this.Name = "frmAddBook";
             this.Text = "frmAnalytics";
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRating)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownYear)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -236,7 +246,6 @@ namespace Dashboard
         private System.Windows.Forms.TextBox txtBookName;
         private System.Windows.Forms.TextBox txtAuthor;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtYear;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtReview;
         private System.Windows.Forms.Label label4;
@@ -244,5 +253,6 @@ namespace Dashboard
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btnAddBookAddBook;
         private System.Windows.Forms.Button btnAddBookClear;
+        private System.Windows.Forms.NumericUpDown numericUpDownYear;
     }
 }

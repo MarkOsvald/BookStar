@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Dashboard.Tables;
 
 namespace Dashboard
 {
@@ -17,14 +18,63 @@ namespace Dashboard
             InitializeComponent();
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        private void pictureBox1_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
+        private void btnChangePassword_Click(object sender, EventArgs e)
         {
+                Users user = new Users
+                {
+                    Username = Form1.instance.lab1.Text,
+                    Password = txtPassword.Text,
+                };
 
+            if (String.IsNullOrEmpty(txtPassword.Text) || String.IsNullOrEmpty(txtNewPassword.Text) || String.IsNullOrEmpty(txtConfirmPassword.Text))
+            {
+                MessageBox.Show("Password fields are empty", "Change password Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
+            else if (SqlClient.LoginUser(user) == false)
+            {
+                MessageBox.Show("Wrong password", "Change password Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtPassword.Text = "";
+                txtNewPassword.Text = "";
+                txtConfirmPassword.Text = "";
+                txtPassword.Focus();
+            }
+            else if (txtNewPassword.Text == txtConfirmPassword.Text)
+            {
+                Users user2 = new Users
+                {
+                    Username = Form1.instance.lab1.Text,
+                    Password = txtNewPassword.Text,
+                };
+                SqlClient.ChangePassword(user2);
+
+                txtPassword.Text = "";
+                txtNewPassword.Text = "";
+                txtConfirmPassword.Text = "";
+
+                MessageBox.Show("Your Password has been Successfully Changed", "Change password Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Passwords does not match, Please Re-enter", "Change password Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtPassword.Text = "";
+                txtNewPassword.Text = "";
+                txtConfirmPassword.Text = "";
+                txtPassword.Focus();
+            }
+        }
+
+        private void btnCLEAR_Click(object sender, EventArgs e)
+        {
+            txtPassword.Text = "";
+            txtNewPassword.Text = "";
+            txtConfirmPassword.Text = "";
+            txtPassword.Focus();
         }
     }
 }

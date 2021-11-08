@@ -15,16 +15,42 @@ namespace Dashboard
         public frmYourBooks()
         {
             InitializeComponent();
+            populateItems();
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        private void frmYourBooks_Load(object sender, EventArgs e)
         {
 
         }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
+        public void populateItems()
         {
+            var username = Form1.instance.lab1.Text;
+            var listOfBooks = SqlClient.LoadUserBooks(username);
+            ListItem[] listItems = new ListItem[listOfBooks.Count + 1];
+            int i = 0;
 
+            foreach (var book in listOfBooks)
+            {
+                i++;
+                listItems[i] = new ListItem
+                {
+                    Title = book.Book,
+                    Author = book.Author,
+                    Year = book.Year.ToString(),
+                    Rating = book.Rating.ToString()
+                };
+
+                if (flowLayoutPanel1.Controls.Count < 0)
+                {
+                    flowLayoutPanel1.Controls.Clear();
+                }
+                else
+                {
+                    flowLayoutPanel1.Controls.Add(listItems[i]);
+                }
+            }
         }
+
     }
 }
