@@ -106,16 +106,16 @@
     <Compile Include="frmBookReview.Designer.cs">
       <DependentUpon>frmBookReview.cs</DependentUpon>
     </Compile>
-    <Compile Include="ListItem.cs">
+    <Compile Include="ListItems\ListItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ListItem.Designer.cs">
+    <Compile Include="ListItems\ListItem.Designer.cs">
       <DependentUpon>ListItem.cs</DependentUpon>
     </Compile>
-    <Compile Include="ListItemDiscover.cs">
+    <Compile Include="ListItems\ListItemDiscover.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ListItemDiscover.Designer.cs">
+    <Compile Include="ListItems\ListItemDiscover.Designer.cs">
       <DependentUpon>ListItemDiscover.cs</DependentUpon>
     </Compile>
     <Compile Include="Tables\Users.cs" />
@@ -173,11 +173,7 @@
     <Compile Include="SqlClient.cs" />
     <None Include="Resources\icons8-down-left-24.png" />
     <None Include="Resources\icons8-star-24 %281%29.png" />
-    <None Include="Resources\icons8-star-48 %281%29.png" />
-    <None Include="Resources\icons8-star-48.png" />
-    <None Include="Resources\icons8-star-24.png" />
     <None Include="Resources\icons8-trash-24.png" />
-    <None Include="Resources\icons8-geography-242.png" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -205,10 +201,10 @@
     <EmbeddedResource Include="frmRegister.resx">
       <DependentUpon>frmRegister.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ListItem.resx">
+    <EmbeddedResource Include="ListItems\ListItem.resx">
       <DependentUpon>ListItem.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ListItemDiscover.resx">
+    <EmbeddedResource Include="ListItems\ListItemDiscover.resx">
       <DependentUpon>ListItemDiscover.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -239,49 +235,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Untitled-11.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\home.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\diagram.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\calendar.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Conact.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\settings.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\money-bag.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\downloads.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\chart-diagram.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Lrg-diagram.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Lrg-calendar.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Lrg-Conact.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Lrg-settings.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Capture5.PNG" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8-add-book-24.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\icons8-add-book-241.png" />
@@ -297,9 +257,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\icons8-gear-24.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8-geography-241.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
