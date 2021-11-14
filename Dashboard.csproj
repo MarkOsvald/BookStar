@@ -183,6 +183,9 @@
     <EmbeddedResource Include="frmBookReview.resx">
       <DependentUpon>frmBookReview.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmSettings.et.resx">
+      <DependentUpon>frmSettings.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmYourBooks.resx">
       <DependentUpon>frmYourBooks.cs</DependentUpon>
     </EmbeddedResource>
