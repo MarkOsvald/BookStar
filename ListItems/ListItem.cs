@@ -74,9 +74,8 @@ namespace Dashboard
             SqlClient.DeleteBookWithId(_title,_year,_rating,_author);
 
             //Refresh page
-            if(Form1.instance.labTitle.Text == "Your Books")
+            if(Form1.instance.labTitle.Text == "Your Books" || Form1.instance.labTitle.Text == "Sinu Raamatud")
             {
-                Form1.instance.labTitle.Text = "Your Books";
                 Form1.instance.formLoader.Controls.Clear();
                 frmYourBooks FrmYourBooks_Vrb = new frmYourBooks() { Dock = DockStyle.Fill, TopLevel = false, TopMost = true };
                 FrmYourBooks_Vrb.FormBorderStyle = FormBorderStyle.None;
@@ -85,7 +84,6 @@ namespace Dashboard
             }
             else
             {
-                Form1.instance.labTitle.Text = "Discover";
                 Form1.instance.formLoader.Controls.Clear();
                 frmDiscover FrmDiscover_Vrb = new frmDiscover() { Dock = DockStyle.Fill, TopLevel = false, TopMost = true };
                 FrmDiscover_Vrb.FormBorderStyle = FormBorderStyle.None;

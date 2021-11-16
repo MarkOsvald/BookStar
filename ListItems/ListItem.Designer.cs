@@ -45,27 +45,27 @@ namespace Dashboard
             // 
             // lblTitle
             // 
-            this.lblTitle.AutoEllipsis = true;
             resources.ApplyResources(this.lblTitle, "lblTitle");
+            this.lblTitle.AutoEllipsis = true;
             this.lblTitle.Name = "lblTitle";
             // 
             // lblAuthor
             // 
-            this.lblAuthor.AutoEllipsis = true;
             resources.ApplyResources(this.lblAuthor, "lblAuthor");
+            this.lblAuthor.AutoEllipsis = true;
             this.lblAuthor.Name = "lblAuthor";
             this.lblAuthor.Click += new System.EventHandler(this.lblMessage_Click);
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(30)))), ((int)(((byte)(54)))));
             resources.ApplyResources(this.panel1, "panel1");
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(30)))), ((int)(((byte)(54)))));
             this.panel1.Name = "panel1";
             // 
             // btnREVIEW
             // 
-            this.btnREVIEW.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
             resources.ApplyResources(this.btnREVIEW, "btnREVIEW");
+            this.btnREVIEW.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
             this.btnREVIEW.FlatAppearance.BorderSize = 0;
             this.btnREVIEW.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(126)))), ((int)(((byte)(249)))));
             this.btnREVIEW.Name = "btnREVIEW";
@@ -74,8 +74,8 @@ namespace Dashboard
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.lblRating);
             resources.ApplyResources(this.panel2, "panel2");
+            this.panel2.Controls.Add(this.lblRating);
             this.panel2.Name = "panel2";
             // 
             // lblRating
@@ -87,23 +87,23 @@ namespace Dashboard
             // 
             // lblYear
             // 
-            this.lblYear.AutoEllipsis = true;
             resources.ApplyResources(this.lblYear, "lblYear");
+            this.lblYear.AutoEllipsis = true;
             this.lblYear.Name = "lblYear";
             // 
             // pictureBox1
             // 
+            resources.ApplyResources(this.pictureBox1, "pictureBox1");
             this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.pictureBox1.Image = global::Dashboard.Properties.Resources.icons8_star_24__1_;
-            resources.ApplyResources(this.pictureBox1, "pictureBox1");
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // DELETE
             // 
-            this.DELETE.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
             resources.ApplyResources(this.DELETE, "DELETE");
+            this.DELETE.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
             this.DELETE.FlatAppearance.BorderSize = 0;
             this.DELETE.Image = global::Dashboard.Properties.Resources.icons8_trash_24;
             this.DELETE.Name = "DELETE";

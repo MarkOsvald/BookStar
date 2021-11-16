@@ -11,6 +11,7 @@ using System.Data.OleDb;
 using System.Data.SQLite;
 using Dapper;
 using Dashboard.Tables;
+using System.Threading;
 
 namespace Dashboard
 {
@@ -37,6 +38,8 @@ namespace Dashboard
             var output = SqlClient.LoginUser(user);
             if(output)
             {
+                SqlClient.ChangeActiveUser(user);
+
                 new Form1().Show();
                 Hide();
                 Form1.instance.lab1.Text = txtUsername.Text;
@@ -90,6 +93,20 @@ namespace Dashboard
         private void txtPassword_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnEnglish_Click(object sender, EventArgs e)
+        {
+            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-EU");
+            Controls.Clear();
+            InitializeComponent();
+        }
+
+        private void btnEstonian_Click(object sender, EventArgs e)
+        {
+            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("et");
+            Controls.Clear();
+            InitializeComponent();
         }
     }
 }

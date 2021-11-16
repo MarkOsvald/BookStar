@@ -61,7 +61,7 @@ namespace Dashboard
         {
             txtAuthor.Text = "";
             txtBookName.Text = "";
-            numericUpDownYear.Value = 0;
+            numericUpDownYear.Value = 2000;
             txtReview.Text = "";
             numericUpDownRating.Value = 1;
         }

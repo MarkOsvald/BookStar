@@ -30,7 +30,6 @@ namespace Dashboard
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmLogin));
-            this.label6 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.checkbcShowPas = new System.Windows.Forms.CheckBox();
@@ -43,12 +42,10 @@ namespace Dashboard
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.btnEstonian = new System.Windows.Forms.Button();
+            this.btnEnglish = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // label6
-            // 
-            resources.ApplyResources(this.label6, "label6");
-            this.label6.Name = "label6";
             // 
             // button2
             // 
@@ -151,11 +148,40 @@ namespace Dashboard
             this.label4.Name = "label4";
             this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
+            // label6
+            // 
+            resources.ApplyResources(this.label6, "label6");
+            this.label6.Name = "label6";
+            // 
+            // btnEstonian
+            // 
+            this.btnEstonian.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(51)))), ((int)(((byte)(73)))));
+            this.btnEstonian.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnEstonian.FlatAppearance.BorderSize = 0;
+            resources.ApplyResources(this.btnEstonian, "btnEstonian");
+            this.btnEstonian.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(126)))), ((int)(((byte)(249)))));
+            this.btnEstonian.Name = "btnEstonian";
+            this.btnEstonian.UseVisualStyleBackColor = false;
+            this.btnEstonian.Click += new System.EventHandler(this.btnEstonian_Click);
+            // 
+            // btnEnglish
+            // 
+            this.btnEnglish.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(51)))), ((int)(((byte)(73)))));
+            this.btnEnglish.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnEnglish.FlatAppearance.BorderSize = 0;
+            resources.ApplyResources(this.btnEnglish, "btnEnglish");
+            this.btnEnglish.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(126)))), ((int)(((byte)(249)))));
+            this.btnEnglish.Name = "btnEnglish";
+            this.btnEnglish.UseVisualStyleBackColor = false;
+            this.btnEnglish.Click += new System.EventHandler(this.btnEnglish_Click);
+            // 
             // frmLogin
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(51)))), ((int)(((byte)(73)))));
+            this.Controls.Add(this.btnEstonian);
+            this.Controls.Add(this.btnEnglish);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.button4);
@@ -179,8 +205,6 @@ namespace Dashboard
         }
 
         #endregion
-
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.CheckBox checkbcShowPas;
@@ -193,5 +217,8 @@ namespace Dashboard
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button btnEstonian;
+        private System.Windows.Forms.Button btnEnglish;
     }
 }

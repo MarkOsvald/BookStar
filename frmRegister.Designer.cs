@@ -42,6 +42,8 @@ namespace Dashboard
             this.button2 = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.btnEnglish = new System.Windows.Forms.Button();
+            this.btnEstonian = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -58,9 +60,9 @@ namespace Dashboard
             // 
             // txtUsername
             // 
+            resources.ApplyResources(this.txtUsername, "txtUsername");
             this.txtUsername.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(79)))), ((int)(((byte)(99)))));
             this.txtUsername.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            resources.ApplyResources(this.txtUsername, "txtUsername");
             this.txtUsername.ForeColor = System.Drawing.SystemColors.InactiveCaption;
             this.txtUsername.Name = "txtUsername";
             // 
@@ -71,9 +73,9 @@ namespace Dashboard
             // 
             // txtPassword
             // 
+            resources.ApplyResources(this.txtPassword, "txtPassword");
             this.txtPassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(79)))), ((int)(((byte)(99)))));
             this.txtPassword.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            resources.ApplyResources(this.txtPassword, "txtPassword");
             this.txtPassword.ForeColor = System.Drawing.SystemColors.InactiveCaption;
             this.txtPassword.Name = "txtPassword";
             // 
@@ -84,9 +86,9 @@ namespace Dashboard
             // 
             // txtComPassword
             // 
+            resources.ApplyResources(this.txtComPassword, "txtComPassword");
             this.txtComPassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(79)))), ((int)(((byte)(99)))));
             this.txtComPassword.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            resources.ApplyResources(this.txtComPassword, "txtComPassword");
             this.txtComPassword.ForeColor = System.Drawing.SystemColors.InactiveCaption;
             this.txtComPassword.Name = "txtComPassword";
             // 
@@ -101,10 +103,10 @@ namespace Dashboard
             // 
             // button1
             // 
+            resources.ApplyResources(this.button1, "button1");
             this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(30)))), ((int)(((byte)(54)))));
             this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button1.FlatAppearance.BorderSize = 0;
-            resources.ApplyResources(this.button1, "button1");
             this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(126)))), ((int)(((byte)(249)))));
             this.button1.Name = "button1";
             this.button1.UseVisualStyleBackColor = false;
@@ -112,9 +114,9 @@ namespace Dashboard
             // 
             // button2
             // 
+            resources.ApplyResources(this.button2, "button2");
             this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(79)))), ((int)(((byte)(99)))));
             this.button2.Cursor = System.Windows.Forms.Cursors.Hand;
-            resources.ApplyResources(this.button2, "button2");
             this.button2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(126)))), ((int)(((byte)(249)))));
             this.button2.Name = "button2";
             this.button2.UseVisualStyleBackColor = false;
@@ -133,12 +135,37 @@ namespace Dashboard
             // 
             resources.ApplyResources(this.label6, "label6");
             this.label6.Name = "label6";
+            this.label6.Click += new System.EventHandler(this.label6_Click);
+            // 
+            // btnEnglish
+            // 
+            resources.ApplyResources(this.btnEnglish, "btnEnglish");
+            this.btnEnglish.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(51)))), ((int)(((byte)(73)))));
+            this.btnEnglish.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnEnglish.FlatAppearance.BorderSize = 0;
+            this.btnEnglish.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(126)))), ((int)(((byte)(249)))));
+            this.btnEnglish.Name = "btnEnglish";
+            this.btnEnglish.UseVisualStyleBackColor = false;
+            this.btnEnglish.Click += new System.EventHandler(this.btnEnglish_Click);
+            // 
+            // btnEstonian
+            // 
+            resources.ApplyResources(this.btnEstonian, "btnEstonian");
+            this.btnEstonian.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(51)))), ((int)(((byte)(73)))));
+            this.btnEstonian.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnEstonian.FlatAppearance.BorderSize = 0;
+            this.btnEstonian.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(126)))), ((int)(((byte)(249)))));
+            this.btnEstonian.Name = "btnEstonian";
+            this.btnEstonian.UseVisualStyleBackColor = false;
+            this.btnEstonian.Click += new System.EventHandler(this.btnEstonian_Click);
             // 
             // frmRegister
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(51)))), ((int)(((byte)(73)))));
+            this.Controls.Add(this.btnEstonian);
+            this.Controls.Add(this.btnEnglish);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.button2);
@@ -174,5 +201,7 @@ namespace Dashboard
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button btnEnglish;
+        private System.Windows.Forms.Button btnEstonian;
     }
 }

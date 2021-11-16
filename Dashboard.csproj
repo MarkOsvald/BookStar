@@ -174,14 +174,35 @@
     <None Include="Resources\icons8-down-left-24.png" />
     <None Include="Resources\icons8-star-24 %281%29.png" />
     <None Include="Resources\icons8-trash-24.png" />
+    <EmbeddedResource Include="Form1.en.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.et.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAddBook.et.resx">
+      <DependentUpon>frmAddBook.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmAddBook.resx">
       <DependentUpon>frmAddBook.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmBookReview.resx">
       <DependentUpon>frmBookReview.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmLogin.en-150.resx">
+      <DependentUpon>frmLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmLogin.et.resx">
+      <DependentUpon>frmLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmRegister.en.resx">
+      <DependentUpon>frmRegister.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmRegister.et.resx">
+      <DependentUpon>frmRegister.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmSettings.et.resx">
       <DependentUpon>frmSettings.cs</DependentUpon>
@@ -204,8 +225,14 @@
     <EmbeddedResource Include="frmRegister.resx">
       <DependentUpon>frmRegister.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ListItems\ListItem.et.resx">
+      <DependentUpon>ListItem.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ListItems\ListItem.resx">
       <DependentUpon>ListItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ListItems\ListItemDiscover.et.resx">
+      <DependentUpon>ListItemDiscover.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ListItems\ListItemDiscover.resx">
       <DependentUpon>ListItemDiscover.cs</DependentUpon>

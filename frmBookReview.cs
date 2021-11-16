@@ -28,7 +28,7 @@ namespace Dashboard
 
         private void btnBack_Click(object sender, EventArgs e)
         {
-            if (Form1.instance.labTitle.Text == "Your Books")
+            if (Form1.instance.labTitle.Text == "Your Books" || Form1.instance.labTitle.Text == "Sinu Raamatud")
             {
                 Form1.instance.labTitle.Text = "Your Books";
                 Form1.instance.formLoader.Controls.Clear();

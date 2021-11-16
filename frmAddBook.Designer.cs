@@ -55,18 +55,18 @@ namespace Dashboard
             // 
             // txtBookName
             // 
+            resources.ApplyResources(this.txtBookName, "txtBookName");
             this.txtBookName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(79)))), ((int)(((byte)(99)))));
             this.txtBookName.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            resources.ApplyResources(this.txtBookName, "txtBookName");
             this.txtBookName.ForeColor = System.Drawing.SystemColors.InactiveCaption;
             this.txtBookName.Name = "txtBookName";
             this.txtBookName.TextChanged += new System.EventHandler(this.txtBookName_TextChanged);
             // 
             // txtAuthor
             // 
+            resources.ApplyResources(this.txtAuthor, "txtAuthor");
             this.txtAuthor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(79)))), ((int)(((byte)(99)))));
             this.txtAuthor.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            resources.ApplyResources(this.txtAuthor, "txtAuthor");
             this.txtAuthor.ForeColor = System.Drawing.SystemColors.InactiveCaption;
             this.txtAuthor.Name = "txtAuthor";
             // 
@@ -85,9 +85,9 @@ namespace Dashboard
             // 
             // txtReview
             // 
+            resources.ApplyResources(this.txtReview, "txtReview");
             this.txtReview.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(79)))), ((int)(((byte)(99)))));
             this.txtReview.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            resources.ApplyResources(this.txtReview, "txtReview");
             this.txtReview.ForeColor = System.Drawing.SystemColors.InactiveCaption;
             this.txtReview.Name = "txtReview";
             // 
@@ -99,8 +99,8 @@ namespace Dashboard
             // 
             // numericUpDownRating
             // 
-            this.numericUpDownRating.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(79)))), ((int)(((byte)(99)))));
             resources.ApplyResources(this.numericUpDownRating, "numericUpDownRating");
+            this.numericUpDownRating.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(79)))), ((int)(((byte)(99)))));
             this.numericUpDownRating.ForeColor = System.Drawing.Color.DarkKhaki;
             this.numericUpDownRating.Maximum = new decimal(new int[] {
             10,
@@ -127,10 +127,10 @@ namespace Dashboard
             // 
             // btnAddBookAddBook
             // 
+            resources.ApplyResources(this.btnAddBookAddBook, "btnAddBookAddBook");
             this.btnAddBookAddBook.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(30)))), ((int)(((byte)(54)))));
             this.btnAddBookAddBook.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnAddBookAddBook.FlatAppearance.BorderSize = 0;
-            resources.ApplyResources(this.btnAddBookAddBook, "btnAddBookAddBook");
             this.btnAddBookAddBook.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(126)))), ((int)(((byte)(249)))));
             this.btnAddBookAddBook.Name = "btnAddBookAddBook";
             this.btnAddBookAddBook.UseVisualStyleBackColor = false;
@@ -138,9 +138,9 @@ namespace Dashboard
             // 
             // btnAddBookClear
             // 
+            resources.ApplyResources(this.btnAddBookClear, "btnAddBookClear");
             this.btnAddBookClear.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(79)))), ((int)(((byte)(99)))));
             this.btnAddBookClear.Cursor = System.Windows.Forms.Cursors.Hand;
-            resources.ApplyResources(this.btnAddBookClear, "btnAddBookClear");
             this.btnAddBookClear.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(126)))), ((int)(((byte)(249)))));
             this.btnAddBookClear.Name = "btnAddBookClear";
             this.btnAddBookClear.UseVisualStyleBackColor = false;
@@ -148,8 +148,8 @@ namespace Dashboard
             // 
             // numericUpDownYear
             // 
-            this.numericUpDownYear.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(79)))), ((int)(((byte)(99)))));
             resources.ApplyResources(this.numericUpDownYear, "numericUpDownYear");
+            this.numericUpDownYear.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(79)))), ((int)(((byte)(99)))));
             this.numericUpDownYear.ForeColor = System.Drawing.SystemColors.InactiveCaption;
             this.numericUpDownYear.Maximum = new decimal(new int[] {
             2022,

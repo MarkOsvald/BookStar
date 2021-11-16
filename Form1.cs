@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using Dashboard.Tables;
+using System.Threading;
 
 namespace Dashboard
 {
@@ -33,6 +34,9 @@ namespace Dashboard
 
         public Form1()
         {
+            string username = SqlClient.GetActiveUsername();
+            string lang = SqlClient.GetLanguage(username);
+            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(lang);
             InitializeComponent();
             AddBooksForDiscovery();
             instance = this;
@@ -45,12 +49,13 @@ namespace Dashboard
             pnlNavigation.Top = btnAddBook.Top;
             pnlNavigation.Left = btnAddBook.Left;
 
-            lblTitle.Text = "Add Book";
+            lblTitle.Text = btnAddBook.Text;
             PnlFormLoader.Controls.Clear();
             frmAddBook FrmAddBook_Vrb = new frmAddBook() { Dock = DockStyle.Fill, TopLevel = false, TopMost = true };
             FrmAddBook_Vrb.FormBorderStyle = FormBorderStyle.None;
             PnlFormLoader.Controls.Add(FrmAddBook_Vrb);
-            FrmAddBook_Vrb.Show(); ;
+            FrmAddBook_Vrb.Show();
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -64,7 +69,7 @@ namespace Dashboard
             pnlNavigation.Top = btnDashboard.Top;
             btnDashboard.BackColor = Color.FromArgb(46, 51, 73);
 
-            lblTitle.Text = "Dashboard";
+            lblTitle.Text = btnDashboard.Text;
             PnlFormLoader.Controls.Clear();
             frmDashboard FrmDashboard_Vrb = new frmDashboard() { Dock = DockStyle.Fill, TopLevel = false, TopMost = true };
             FrmDashboard_Vrb.FormBorderStyle = FormBorderStyle.None;
@@ -79,7 +84,7 @@ namespace Dashboard
             pnlNavigation.Left = btnAddBook.Left;
             btnAddBook.BackColor = Color.FromArgb(46, 51, 73);
 
-            lblTitle.Text = "Add Book";
+            lblTitle.Text = btnAddBook.Text;
             PnlFormLoader.Controls.Clear();
             frmAddBook FrmAddBook_Vrb = new frmAddBook() { Dock = DockStyle.Fill, TopLevel = false, TopMost = true };
             FrmAddBook_Vrb.FormBorderStyle = FormBorderStyle.None;
@@ -93,7 +98,7 @@ namespace Dashboard
             pnlNavigation.Top = btnYourBooks.Top;
             btnYourBooks.BackColor = Color.FromArgb(46, 51, 73);
 
-            lblTitle.Text = "Your Books";
+            lblTitle.Text = btnYourBooks.Text;
             PnlFormLoader.Controls.Clear();
             frmYourBooks FrmYourBooks_Vrb = new frmYourBooks() { Dock = DockStyle.Fill, TopLevel = false, TopMost = true };
             FrmYourBooks_Vrb.FormBorderStyle = FormBorderStyle.None;
@@ -107,7 +112,7 @@ namespace Dashboard
             pnlNavigation.Top = btnDiscover.Top;
             btnDiscover.BackColor = Color.FromArgb(46, 51, 73);
 
-            lblTitle.Text = "Discover";
+            lblTitle.Text = btnDiscover.Text;
             PnlFormLoader.Controls.Clear();
             frmDiscover FrmDiscover_Vrb = new frmDiscover() { Dock = DockStyle.Fill, TopLevel = false, TopMost = true };
             FrmDiscover_Vrb.FormBorderStyle = FormBorderStyle.None;
@@ -121,7 +126,7 @@ namespace Dashboard
             pnlNavigation.Top = btnSettings.Top;
             btnSettings.BackColor = Color.FromArgb(46, 51, 73);
 
-            lblTitle.Text = "Settings";
+            lblTitle.Text = btnSettings.Text;
             PnlFormLoader.Controls.Clear();
             frmSettings FrmSettings_Vrb = new frmSettings() { Dock = DockStyle.Fill, TopLevel = false, TopMost = true };
             FrmSettings_Vrb.FormBorderStyle = FormBorderStyle.None;
@@ -211,6 +216,29 @@ namespace Dashboard
             SqlClient.SaveBook(book5);
             SqlClient.SaveBook(book6);
 
+        }
+
+        public void Reload()
+        {
+            Controls.Clear();
+            InitializeComponent();
+
+            instance = this;
+            lab1 = label1;
+            labTitle = lblTitle;
+            formLoader = PnlFormLoader;
+
+            label1.Text = SqlClient.GetActiveUsername();
+            pnlNavigation.Height = btnSettings.Height;
+            pnlNavigation.Top = btnSettings.Top;
+            pnlNavigation.Left = btnSettings.Left;
+
+            lblTitle.Text = btnSettings.Text;
+            PnlFormLoader.Controls.Clear();
+            frmSettings FrmSettings_Vrb = new frmSettings() { Dock = DockStyle.Fill, TopLevel = false, TopMost = true };
+            FrmSettings_Vrb.FormBorderStyle = FormBorderStyle.None;
+            PnlFormLoader.Controls.Add(FrmSettings_Vrb);
+            FrmSettings_Vrb.Show();
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)

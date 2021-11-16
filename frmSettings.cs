@@ -43,7 +43,6 @@ namespace Dashboard
                 txtPassword.Text = "";
                 txtNewPassword.Text = "";
                 txtConfirmPassword.Text = "";
-                txtPassword.Focus();
             }
             else if (txtNewPassword.Text == txtConfirmPassword.Text)
             {
@@ -85,16 +84,28 @@ namespace Dashboard
         }
         private void btnEnglish_Click(object sender, EventArgs e)
         {
+            Users user = new Users
+            {
+                Username = Form1.instance.lab1.Text,
+                Language = "en-EU"
+            };
+            SqlClient.ChangeLanguage(user);
+
             Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-EU");
-            this.Controls.Clear();
-            InitializeComponent();
+            Form1.instance.Reload();
         }
 
         private void btnEstonian_Click(object sender, EventArgs e)
         {
+            Users user = new Users
+            {
+                Username = Form1.instance.lab1.Text,
+                Language = "et"
+            };
+            SqlClient.ChangeLanguage(user);
+
             Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("et");
-            this.Controls.Clear();
-            InitializeComponent();
+            Form1.instance.Reload();
         }
 
         private void panel5_Paint(object sender, PaintEventArgs e)

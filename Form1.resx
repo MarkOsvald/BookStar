@@ -232,7 +232,7 @@
     <value>1</value>
   </data>
   <data name="btnYourBooks.Text" xml:space="preserve">
-    <value>Your books</value>
+    <value>Your Books</value>
   </data>
   <data name="btnYourBooks.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>TextBeforeImage</value>

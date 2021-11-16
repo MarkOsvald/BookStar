@@ -32,6 +32,11 @@ namespace Dashboard
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.panel1 = new System.Windows.Forms.Panel();
             this.pnlNavigation = new System.Windows.Forms.Panel();
+            this.btnSettings = new System.Windows.Forms.Button();
+            this.btnDiscover = new System.Windows.Forms.Button();
+            this.btnYourBooks = new System.Windows.Forms.Button();
+            this.btnAddBook = new System.Windows.Forms.Button();
+            this.btnDashboard = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.PnlNav = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
@@ -40,11 +45,6 @@ namespace Dashboard
             this.lblTitle = new System.Windows.Forms.Label();
             this.btnExit = new System.Windows.Forms.Button();
             this.PnlFormLoader = new System.Windows.Forms.Panel();
-            this.btnSettings = new System.Windows.Forms.Button();
-            this.btnDiscover = new System.Windows.Forms.Button();
-            this.btnYourBooks = new System.Windows.Forms.Button();
-            this.btnAddBook = new System.Windows.Forms.Button();
-            this.btnDashboard = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -68,6 +68,61 @@ namespace Dashboard
             this.pnlNavigation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(126)))), ((int)(((byte)(249)))));
             resources.ApplyResources(this.pnlNavigation, "pnlNavigation");
             this.pnlNavigation.Name = "pnlNavigation";
+            // 
+            // btnSettings
+            // 
+            resources.ApplyResources(this.btnSettings, "btnSettings");
+            this.btnSettings.FlatAppearance.BorderSize = 0;
+            this.btnSettings.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(126)))), ((int)(((byte)(249)))));
+            this.btnSettings.Image = global::Dashboard.Properties.Resources.icons8_gear_24;
+            this.btnSettings.Name = "btnSettings";
+            this.btnSettings.UseVisualStyleBackColor = true;
+            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
+            this.btnSettings.Leave += new System.EventHandler(this.btnSettings_Leave);
+            // 
+            // btnDiscover
+            // 
+            resources.ApplyResources(this.btnDiscover, "btnDiscover");
+            this.btnDiscover.FlatAppearance.BorderSize = 0;
+            this.btnDiscover.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(126)))), ((int)(((byte)(249)))));
+            this.btnDiscover.Image = global::Dashboard.Properties.Resources.icons8_geography_24;
+            this.btnDiscover.Name = "btnDiscover";
+            this.btnDiscover.UseVisualStyleBackColor = true;
+            this.btnDiscover.Click += new System.EventHandler(this.btnDiscover_Click);
+            this.btnDiscover.Leave += new System.EventHandler(this.btnContactUs_Leave);
+            // 
+            // btnYourBooks
+            // 
+            resources.ApplyResources(this.btnYourBooks, "btnYourBooks");
+            this.btnYourBooks.FlatAppearance.BorderSize = 0;
+            this.btnYourBooks.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(126)))), ((int)(((byte)(249)))));
+            this.btnYourBooks.Image = global::Dashboard.Properties.Resources.icons8_features_list_24;
+            this.btnYourBooks.Name = "btnYourBooks";
+            this.btnYourBooks.UseVisualStyleBackColor = true;
+            this.btnYourBooks.Click += new System.EventHandler(this.btnYourBook_Click);
+            this.btnYourBooks.Leave += new System.EventHandler(this.btnCalendar_Leave);
+            // 
+            // btnAddBook
+            // 
+            resources.ApplyResources(this.btnAddBook, "btnAddBook");
+            this.btnAddBook.FlatAppearance.BorderSize = 0;
+            this.btnAddBook.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(126)))), ((int)(((byte)(249)))));
+            this.btnAddBook.Image = global::Dashboard.Properties.Resources.icons8_add_book_241;
+            this.btnAddBook.Name = "btnAddBook";
+            this.btnAddBook.UseVisualStyleBackColor = true;
+            this.btnAddBook.Click += new System.EventHandler(this.BtnAddBook_Click);
+            this.btnAddBook.Leave += new System.EventHandler(this.BtnAnalytics_Leave);
+            // 
+            // btnDashboard
+            // 
+            resources.ApplyResources(this.btnDashboard, "btnDashboard");
+            this.btnDashboard.FlatAppearance.BorderSize = 0;
+            this.btnDashboard.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(126)))), ((int)(((byte)(249)))));
+            this.btnDashboard.Image = global::Dashboard.Properties.Resources.icons8_user_24;
+            this.btnDashboard.Name = "btnDashboard";
+            this.btnDashboard.UseVisualStyleBackColor = true;
+            this.btnDashboard.Click += new System.EventHandler(this.BtnDashboard_Click);
+            this.btnDashboard.Leave += new System.EventHandler(this.BtnDashboard_Leave);
             // 
             // panel2
             // 
@@ -126,61 +181,6 @@ namespace Dashboard
             resources.ApplyResources(this.PnlFormLoader, "PnlFormLoader");
             this.PnlFormLoader.Name = "PnlFormLoader";
             this.PnlFormLoader.Paint += new System.Windows.Forms.PaintEventHandler(this.PnlFormLoader_Paint);
-            // 
-            // btnSettings
-            // 
-            resources.ApplyResources(this.btnSettings, "btnSettings");
-            this.btnSettings.FlatAppearance.BorderSize = 0;
-            this.btnSettings.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(126)))), ((int)(((byte)(249)))));
-            this.btnSettings.Image = global::Dashboard.Properties.Resources.icons8_gear_24;
-            this.btnSettings.Name = "btnSettings";
-            this.btnSettings.UseVisualStyleBackColor = true;
-            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
-            this.btnSettings.Leave += new System.EventHandler(this.btnSettings_Leave);
-            // 
-            // btnDiscover
-            // 
-            resources.ApplyResources(this.btnDiscover, "btnDiscover");
-            this.btnDiscover.FlatAppearance.BorderSize = 0;
-            this.btnDiscover.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(126)))), ((int)(((byte)(249)))));
-            this.btnDiscover.Image = global::Dashboard.Properties.Resources.icons8_geography_24;
-            this.btnDiscover.Name = "btnDiscover";
-            this.btnDiscover.UseVisualStyleBackColor = true;
-            this.btnDiscover.Click += new System.EventHandler(this.btnDiscover_Click);
-            this.btnDiscover.Leave += new System.EventHandler(this.btnContactUs_Leave);
-            // 
-            // btnYourBooks
-            // 
-            resources.ApplyResources(this.btnYourBooks, "btnYourBooks");
-            this.btnYourBooks.FlatAppearance.BorderSize = 0;
-            this.btnYourBooks.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(126)))), ((int)(((byte)(249)))));
-            this.btnYourBooks.Image = global::Dashboard.Properties.Resources.icons8_features_list_24;
-            this.btnYourBooks.Name = "btnYourBooks";
-            this.btnYourBooks.UseVisualStyleBackColor = true;
-            this.btnYourBooks.Click += new System.EventHandler(this.btnYourBook_Click);
-            this.btnYourBooks.Leave += new System.EventHandler(this.btnCalendar_Leave);
-            // 
-            // btnAddBook
-            // 
-            resources.ApplyResources(this.btnAddBook, "btnAddBook");
-            this.btnAddBook.FlatAppearance.BorderSize = 0;
-            this.btnAddBook.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(126)))), ((int)(((byte)(249)))));
-            this.btnAddBook.Image = global::Dashboard.Properties.Resources.icons8_add_book_241;
-            this.btnAddBook.Name = "btnAddBook";
-            this.btnAddBook.UseVisualStyleBackColor = true;
-            this.btnAddBook.Click += new System.EventHandler(this.BtnAddBook_Click);
-            this.btnAddBook.Leave += new System.EventHandler(this.BtnAnalytics_Leave);
-            // 
-            // btnDashboard
-            // 
-            resources.ApplyResources(this.btnDashboard, "btnDashboard");
-            this.btnDashboard.FlatAppearance.BorderSize = 0;
-            this.btnDashboard.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(126)))), ((int)(((byte)(249)))));
-            this.btnDashboard.Image = global::Dashboard.Properties.Resources.icons8_user_24;
-            this.btnDashboard.Name = "btnDashboard";
-            this.btnDashboard.UseVisualStyleBackColor = true;
-            this.btnDashboard.Click += new System.EventHandler(this.BtnDashboard_Click);
-            this.btnDashboard.Leave += new System.EventHandler(this.BtnDashboard_Leave);
             // 
             // Form1
             // 
