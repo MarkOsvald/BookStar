@@ -21,6 +21,25 @@ namespace Dashboard
                 return output.ToList();
             }
         }
+
+        public static bool CheckIfBooksEmpty(string username)
+        {
+            using (IDbConnection cnn = new SQLiteConnection("Data Source=./DemoDB.db;Version=3;"))
+            {
+                var output = cnn.Query<Books>("select * from Books where Username like '" + username + "'");
+                return output.Any();
+            }
+        }
+
+        public static List<Books> LoadUserBooksOrderByAsc(string username)
+        {
+            using (IDbConnection cnn = new SQLiteConnection("Data Source=./DemoDB.db;Version=3;"))
+            {
+                var output = cnn.Query<Books>("select * from Books where Username like '" + username + "' order by Rating DESC ", new DynamicParameters());
+                return output.ToList();
+            }
+        }
+
         public static List<Books> LoadUserBooks(string username)
         {
             using (IDbConnection cnn = new SQLiteConnection("Data Source=./DemoDB.db;Version=3;"))
@@ -29,6 +48,7 @@ namespace Dashboard
                 return output.ToList();
             }
         }
+
         public static List<string> LoadUsers()
         {
             using (IDbConnection cnn = new SQLiteConnection("Data Source=./DemoDB.db;Version=3;"))

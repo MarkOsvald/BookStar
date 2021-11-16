@@ -124,6 +124,12 @@
   <data name="label12.Text" xml:space="preserve">
     <value>Hinda 100 Raamatut</value>
   </data>
+  <data name="lblBookName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>311, 31</value>
+  </data>
+  <data name="lblBookName.Text" xml:space="preserve">
+    <value>Raamatuid pole lisatud</value>
+  </data>
   <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
     <value>179, 25</value>
   </data>

@@ -35,6 +35,8 @@ namespace Dashboard
             this.label12 = new System.Windows.Forms.Label();
             this.lblNumberOfBooks = new System.Windows.Forms.Label();
             this.panel6 = new System.Windows.Forms.Panel();
+            this.lblAuthor = new System.Windows.Forms.Label();
+            this.lblBookName = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.lblDetails = new System.Windows.Forms.Label();
@@ -55,19 +57,19 @@ namespace Dashboard
             // 
             // panel5
             // 
-            resources.ApplyResources(this.panel5, "panel5");
             this.panel5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
             this.panel5.Controls.Add(this.circularProgressBar1);
             this.panel5.Controls.Add(this.label12);
             this.panel5.Controls.Add(this.lblNumberOfBooks);
+            resources.ApplyResources(this.panel5, "panel5");
             this.panel5.Name = "panel5";
             // 
             // circularProgressBar1
             // 
-            resources.ApplyResources(this.circularProgressBar1, "circularProgressBar1");
             this.circularProgressBar1.AnimationFunction = WinFormAnimation.KnownAnimationFunctions.Liner;
             this.circularProgressBar1.AnimationSpeed = 500;
             this.circularProgressBar1.BackColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.circularProgressBar1, "circularProgressBar1");
             this.circularProgressBar1.ForeColor = System.Drawing.Color.White;
             this.circularProgressBar1.InnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
             this.circularProgressBar1.InnerMargin = 2;
@@ -105,10 +107,25 @@ namespace Dashboard
             // 
             // panel6
             // 
-            resources.ApplyResources(this.panel6, "panel6");
             this.panel6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.panel6.Controls.Add(this.lblAuthor);
+            this.panel6.Controls.Add(this.lblBookName);
             this.panel6.Controls.Add(this.label14);
+            resources.ApplyResources(this.panel6, "panel6");
             this.panel6.Name = "panel6";
+            // 
+            // lblAuthor
+            // 
+            resources.ApplyResources(this.lblAuthor, "lblAuthor");
+            this.lblAuthor.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(159)))), ((int)(((byte)(151)))), ((int)(((byte)(176)))));
+            this.lblAuthor.Name = "lblAuthor";
+            // 
+            // lblBookName
+            // 
+            resources.ApplyResources(this.lblBookName, "lblBookName");
+            this.lblBookName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(146)))), ((int)(((byte)(249)))));
+            this.lblBookName.Name = "lblBookName";
+            this.lblBookName.Click += new System.EventHandler(this.label1_Click);
             // 
             // label14
             // 
@@ -118,11 +135,11 @@ namespace Dashboard
             // 
             // panel4
             // 
-            resources.ApplyResources(this.panel4, "panel4");
             this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
             this.panel4.Controls.Add(this.lblDetails);
             this.panel4.Controls.Add(this.lblTotalBooks);
             this.panel4.Controls.Add(this.label9);
+            resources.ApplyResources(this.panel4, "panel4");
             this.panel4.Name = "panel4";
             // 
             // lblDetails
@@ -145,11 +162,11 @@ namespace Dashboard
             // 
             // panel3
             // 
-            resources.ApplyResources(this.panel3, "panel3");
             this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
             this.panel3.Controls.Add(this.lblRecommendation);
             this.panel3.Controls.Add(this.label6);
             this.panel3.Controls.Add(this.label4);
+            resources.ApplyResources(this.panel3, "panel3");
             this.panel3.Name = "panel3";
             // 
             // lblRecommendation
@@ -173,8 +190,8 @@ namespace Dashboard
             // 
             // pictureBox1
             // 
-            resources.ApplyResources(this.pictureBox1, "pictureBox1");
             this.pictureBox1.Image = global::Dashboard.Properties.Resources.books;
+            resources.ApplyResources(this.pictureBox1, "pictureBox1");
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.TabStop = false;
             // 
@@ -228,5 +245,7 @@ namespace Dashboard
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label lblTimestamp;
         private System.Windows.Forms.Label lblDetails;
+        private System.Windows.Forms.Label lblBookName;
+        private System.Windows.Forms.Label lblAuthor;
     }
 }
