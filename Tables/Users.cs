@@ -14,5 +14,7 @@ namespace Dashboard.Tables
 
         public string Language { get; set; }
 
+        public string Timestamp { get; set; }
+
     }
 }

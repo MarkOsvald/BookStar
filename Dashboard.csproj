@@ -171,6 +171,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlClient.cs" />
+    <None Include="Resources\books.png" />
     <None Include="Resources\icons8-down-left-24.png" />
     <None Include="Resources\icons8-star-24 %281%29.png" />
     <None Include="Resources\icons8-trash-24.png" />
@@ -191,6 +192,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmBookReview.resx">
       <DependentUpon>frmBookReview.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDashboard.en-150.resx">
+      <DependentUpon>frmDashboard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDashboard.en-AS.resx">
+      <DependentUpon>frmDashboard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDashboard.en-FK.resx">
+      <DependentUpon>frmDashboard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDashboard.en.resx">
+      <DependentUpon>frmDashboard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDashboard.et.resx">
+      <DependentUpon>frmDashboard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmLogin.en-150.resx">
       <DependentUpon>frmLogin.cs</DependentUpon>

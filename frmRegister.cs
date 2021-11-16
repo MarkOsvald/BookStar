@@ -33,8 +33,7 @@ namespace Dashboard
 
         private void button1_Click(object sender, EventArgs e)
         {
-            List<string> userlist = new List<string>();
-            userlist = SqlClient.LoadUsers();
+            List<string> userlist = SqlClient.LoadUsers();
 
             if (txtUsername.Text == "" || txtPassword.Text == "" || txtComPassword.Text == "")
             {
@@ -55,7 +54,8 @@ namespace Dashboard
                 {
                     Username = txtUsername.Text,
                     Password = txtPassword.Text,
-                    Language = lang
+                    Language = lang,
+                    Timestamp = DateTime.Now.ToString()
                 };
                 SqlClient.SaveUser(user);
 

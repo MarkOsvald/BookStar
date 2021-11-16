@@ -33,38 +33,41 @@ namespace Dashboard
             this.panel5 = new System.Windows.Forms.Panel();
             this.circularProgressBar1 = new CircularProgressBar.CircularProgressBar();
             this.label12 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
+            this.lblNumberOfBooks = new System.Windows.Forms.Label();
             this.panel6 = new System.Windows.Forms.Panel();
             this.label14 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
+            this.lblDetails = new System.Windows.Forms.Label();
+            this.lblTotalBooks = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.label5 = new System.Windows.Forms.Label();
+            this.lblRecommendation = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.lblTimestamp = new System.Windows.Forms.Label();
             this.panel5.SuspendLayout();
             this.panel6.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel5
             // 
+            resources.ApplyResources(this.panel5, "panel5");
             this.panel5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
             this.panel5.Controls.Add(this.circularProgressBar1);
             this.panel5.Controls.Add(this.label12);
-            this.panel5.Controls.Add(this.label10);
-            resources.ApplyResources(this.panel5, "panel5");
+            this.panel5.Controls.Add(this.lblNumberOfBooks);
             this.panel5.Name = "panel5";
             // 
             // circularProgressBar1
             // 
+            resources.ApplyResources(this.circularProgressBar1, "circularProgressBar1");
             this.circularProgressBar1.AnimationFunction = WinFormAnimation.KnownAnimationFunctions.Liner;
             this.circularProgressBar1.AnimationSpeed = 500;
             this.circularProgressBar1.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.circularProgressBar1, "circularProgressBar1");
             this.circularProgressBar1.ForeColor = System.Drawing.Color.White;
             this.circularProgressBar1.InnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
             this.circularProgressBar1.InnerMargin = 2;
@@ -85,7 +88,7 @@ namespace Dashboard
             this.circularProgressBar1.SuperscriptMargin = new System.Windows.Forms.Padding(10, 35, 0, 0);
             this.circularProgressBar1.SuperscriptText = "";
             this.circularProgressBar1.TextMargin = new System.Windows.Forms.Padding(5, 8, 0, 0);
-            this.circularProgressBar1.Value = 10;
+            this.circularProgressBar1.Value = 68;
             // 
             // label12
             // 
@@ -93,17 +96,18 @@ namespace Dashboard
             this.label12.ForeColor = System.Drawing.Color.White;
             this.label12.Name = "label12";
             // 
-            // label10
+            // lblNumberOfBooks
             // 
-            resources.ApplyResources(this.label10, "label10");
-            this.label10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(159)))), ((int)(((byte)(151)))), ((int)(((byte)(176)))));
-            this.label10.Name = "label10";
+            resources.ApplyResources(this.lblNumberOfBooks, "lblNumberOfBooks");
+            this.lblNumberOfBooks.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(159)))), ((int)(((byte)(151)))), ((int)(((byte)(176)))));
+            this.lblNumberOfBooks.Name = "lblNumberOfBooks";
+            this.lblNumberOfBooks.Click += new System.EventHandler(this.lblNumberOfBooks_Click);
             // 
             // panel6
             // 
+            resources.ApplyResources(this.panel6, "panel6");
             this.panel6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
             this.panel6.Controls.Add(this.label14);
-            resources.ApplyResources(this.panel6, "panel6");
             this.panel6.Name = "panel6";
             // 
             // label14
@@ -114,24 +118,24 @@ namespace Dashboard
             // 
             // panel4
             // 
-            this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.panel4.Controls.Add(this.label7);
-            this.panel4.Controls.Add(this.label8);
-            this.panel4.Controls.Add(this.label9);
             resources.ApplyResources(this.panel4, "panel4");
+            this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.panel4.Controls.Add(this.lblDetails);
+            this.panel4.Controls.Add(this.lblTotalBooks);
+            this.panel4.Controls.Add(this.label9);
             this.panel4.Name = "panel4";
             // 
-            // label7
+            // lblDetails
             // 
-            resources.ApplyResources(this.label7, "label7");
-            this.label7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(226)))), ((int)(((byte)(178)))));
-            this.label7.Name = "label7";
+            resources.ApplyResources(this.lblDetails, "lblDetails");
+            this.lblDetails.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(159)))), ((int)(((byte)(151)))), ((int)(((byte)(176)))));
+            this.lblDetails.Name = "lblDetails";
             // 
-            // label8
+            // lblTotalBooks
             // 
-            resources.ApplyResources(this.label8, "label8");
-            this.label8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(159)))), ((int)(((byte)(151)))), ((int)(((byte)(176)))));
-            this.label8.Name = "label8";
+            resources.ApplyResources(this.lblTotalBooks, "lblTotalBooks");
+            this.lblTotalBooks.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(226)))), ((int)(((byte)(178)))));
+            this.lblTotalBooks.Name = "lblTotalBooks";
             // 
             // label9
             // 
@@ -141,24 +145,25 @@ namespace Dashboard
             // 
             // panel3
             // 
+            resources.ApplyResources(this.panel3, "panel3");
             this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.panel3.Controls.Add(this.label5);
+            this.panel3.Controls.Add(this.lblRecommendation);
             this.panel3.Controls.Add(this.label6);
             this.panel3.Controls.Add(this.label4);
-            resources.ApplyResources(this.panel3, "panel3");
             this.panel3.Name = "panel3";
             // 
-            // label5
+            // lblRecommendation
             // 
-            resources.ApplyResources(this.label5, "label5");
-            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(146)))), ((int)(((byte)(249)))));
-            this.label5.Name = "label5";
+            resources.ApplyResources(this.lblRecommendation, "lblRecommendation");
+            this.lblRecommendation.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(146)))), ((int)(((byte)(249)))));
+            this.lblRecommendation.Name = "lblRecommendation";
             // 
             // label6
             // 
             resources.ApplyResources(this.label6, "label6");
             this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(159)))), ((int)(((byte)(151)))), ((int)(((byte)(176)))));
             this.label6.Name = "label6";
+            this.label6.Click += new System.EventHandler(this.label6_Click);
             // 
             // label4
             // 
@@ -166,11 +171,26 @@ namespace Dashboard
             this.label4.ForeColor = System.Drawing.Color.White;
             this.label4.Name = "label4";
             // 
+            // pictureBox1
+            // 
+            resources.ApplyResources(this.pictureBox1, "pictureBox1");
+            this.pictureBox1.Image = global::Dashboard.Properties.Resources.books;
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.TabStop = false;
+            // 
+            // lblTimestamp
+            // 
+            resources.ApplyResources(this.lblTimestamp, "lblTimestamp");
+            this.lblTimestamp.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(159)))), ((int)(((byte)(151)))), ((int)(((byte)(176)))));
+            this.lblTimestamp.Name = "lblTimestamp";
+            // 
             // frmDashboard
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(51)))), ((int)(((byte)(73)))));
+            this.Controls.Add(this.lblTimestamp);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.panel5);
             this.Controls.Add(this.panel6);
             this.Controls.Add(this.panel4);
@@ -185,6 +205,7 @@ namespace Dashboard
             this.panel4.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -194,16 +215,18 @@ namespace Dashboard
         private System.Windows.Forms.Panel panel5;
         private CircularProgressBar.CircularProgressBar circularProgressBar1;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label lblNumberOfBooks;
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label lblTotalBooks;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lblRecommendation;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label lblTimestamp;
+        private System.Windows.Forms.Label lblDetails;
     }
 }

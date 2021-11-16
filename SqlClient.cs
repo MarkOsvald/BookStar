@@ -68,7 +68,7 @@ namespace Dashboard
         {
             using (IDbConnection cnn = new SQLiteConnection("Data Source=./DemoDB.db;Version=3;"))
             {
-                cnn.Execute("insert into Users (Username,Password,Language) values (@Username,@Password,@Language)", user);
+                cnn.Execute("insert into Users (Username,Password,Language,Timestamp) values (@Username,@Password,@Language,@Timestamp)", user);
             }
         }
         public static void ChangeActiveUser(Users user)
@@ -109,6 +109,15 @@ namespace Dashboard
             {
                 var output = cnn.Query<Users>("select * from Users where Username like '" + username + "'");
                 return output.First().Language;
+            }
+        }
+
+        public static string GetTimestamp(string username)
+        {
+            using (IDbConnection cnn = new SQLiteConnection("Data Source=./DemoDB.db;Version=3;"))
+            {
+                var output = cnn.Query<Users>("select * from Users where Username like '" + username + "'");
+                return output.First().Timestamp;
             }
         }
 

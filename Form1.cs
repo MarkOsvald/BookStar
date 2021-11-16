@@ -45,16 +45,16 @@ namespace Dashboard
             formLoader = PnlFormLoader;
 
             Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 25, 25));
-            pnlNavigation.Height = btnAddBook.Height;
-            pnlNavigation.Top = btnAddBook.Top;
-            pnlNavigation.Left = btnAddBook.Left;
+            pnlNavigation.Height = btnDashboard.Height;
+            pnlNavigation.Top = btnDashboard.Top;
+            pnlNavigation.Left = btnDashboard.Left;
 
-            lblTitle.Text = btnAddBook.Text;
+            lblTitle.Text = btnDashboard.Text;
             PnlFormLoader.Controls.Clear();
-            frmAddBook FrmAddBook_Vrb = new frmAddBook() { Dock = DockStyle.Fill, TopLevel = false, TopMost = true };
-            FrmAddBook_Vrb.FormBorderStyle = FormBorderStyle.None;
-            PnlFormLoader.Controls.Add(FrmAddBook_Vrb);
-            FrmAddBook_Vrb.Show();
+            frmDashboard FrmDashboard_Vrb = new frmDashboard() { Dock = DockStyle.Fill, TopLevel = false, TopMost = true };
+            FrmDashboard_Vrb.FormBorderStyle = FormBorderStyle.None;
+            PnlFormLoader.Controls.Add(FrmDashboard_Vrb);
+            FrmDashboard_Vrb.Show();
 
         }
 
@@ -67,6 +67,7 @@ namespace Dashboard
         {
             pnlNavigation.Height = btnDashboard.Height;
             pnlNavigation.Top = btnDashboard.Top;
+            pnlNavigation.Left = btnDashboard.Left;
             btnDashboard.BackColor = Color.FromArgb(46, 51, 73);
 
             lblTitle.Text = btnDashboard.Text;
@@ -81,7 +82,6 @@ namespace Dashboard
         {
             pnlNavigation.Height = btnAddBook.Height;
             pnlNavigation.Top = btnAddBook.Top;
-            pnlNavigation.Left = btnAddBook.Left;
             btnAddBook.BackColor = Color.FromArgb(46, 51, 73);
 
             lblTitle.Text = btnAddBook.Text;
