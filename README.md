@@ -1,5 +1,5 @@
 # BookStar
-Book Star is a book rating desktop application, where you can add or discover books.
+Book Star is a book rating desktop application, where you can add or discover books. Purpose is to motivate people to read more, by giving them goals and recommending them books.
 
 HOW TO RUN IT
 
