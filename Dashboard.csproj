@@ -171,8 +171,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlClient.cs" />
-    <None Include="Release\Dashboard.exe.config" />
-    <None Include="Release\DemoDB.db" />
     <None Include="Resources\books.png" />
     <None Include="Resources\icons8-down-left-24.png" />
     <None Include="Resources\icons8-star-24 %281%29.png" />
@@ -305,6 +303,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\icons8-gear-24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Download\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
