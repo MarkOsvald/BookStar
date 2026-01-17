@@ -605,17 +605,7 @@ internal static class Program
 
             var truncationNote = truncated ? "\nNote: The diff was truncated to stay within size limits." : string.Empty;
 
-            var reviewInstructions = string.Join("\n", new[]
-            {
-                "You are a senior code reviewer.",
-                "Review the PR for correctness, security, maintainability, performance, and tests.",
-                "Return markdown with sections:",
-                "## Summary",
-                "## Findings (bulleted, include severity tags: [blocker], [major], [minor], [nit])",
-                "## Suggestions",
-                "## Tests",
-                "Only reference files and changes present in the diff context.",
-            });
+            var reviewInstructions = LoadReviewTemplate();
 
             var extra = string.IsNullOrWhiteSpace(instructions) ? string.Empty : $"\nAdditional instructions:\n{instructions}\n";
 
@@ -766,6 +756,44 @@ internal static class Program
             var normalized = baseUrl.EndsWith("/", StringComparison.Ordinal) ? baseUrl : $"{baseUrl}/";
             var trimmed = path.StartsWith("/", StringComparison.Ordinal) ? path[1..] : path;
             return new Uri(new Uri(normalized), trimmed).ToString();
+        }
+
+        private static string LoadReviewTemplate()
+        {
+            var templatePaths = new[]
+            {
+                Path.Combine(AppContext.BaseDirectory, "review-template.md"),
+                Path.Combine(Directory.GetCurrentDirectory(), "review-template.md"),
+            };
+
+            foreach (var path in templatePaths)
+            {
+                if (File.Exists(path))
+                {
+                    try
+                    {
+                        var template = File.ReadAllText(path);
+                        if (!string.IsNullOrWhiteSpace(template))
+                        {
+                            return template;
+                        }
+                    }
+                    catch { }
+                }
+            }
+
+            // Fallback to default instructions if template file not found
+            return string.Join("\n", new[]
+            {
+                "You are a senior code reviewer.",
+                "Review the PR for correctness, security, maintainability, performance, and tests.",
+                "Return markdown with sections:",
+                "## Summary",
+                "## Findings (bulleted, include severity tags: [blocker], [major], [minor], [nit])",
+                "## Suggestions",
+                "## Tests",
+                "Only reference files and changes present in the diff context.",
+            });
         }
 
         private static int? GetOptionalInt(JsonElement args, string propertyName)
