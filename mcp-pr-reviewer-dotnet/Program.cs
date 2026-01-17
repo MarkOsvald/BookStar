@@ -45,6 +45,9 @@ internal static class Program
                 case "list":
                     return await RunListCommandAsync(args, server);
 
+                case "comment":
+                    return await RunCommentCommandAsync(args, server);
+
                 case "help":
                 case "--help":
                 case "-h":
@@ -152,6 +155,61 @@ internal static class Program
         return 0;
     }
 
+    private static async Task<int> RunCommentCommandAsync(string[] args, McpServer server)
+    {
+        var owner = GetArgValue(args, "--owner", "-o");
+        var repo = GetArgValue(args, "--repo", "-r");
+        var prNumberStr = GetArgValue(args, "--pr", "-p");
+        var body = GetArgValue(args, "--body", "-b");
+        var bodyFile = GetArgValue(args, "--body-file", "-f");
+
+        if (string.IsNullOrEmpty(owner) || string.IsNullOrEmpty(repo) || string.IsNullOrEmpty(prNumberStr))
+        {
+            Console.Error.WriteLine("Usage: comment --owner <owner> --repo <repo> --pr <number> --body <text>");
+            Console.Error.WriteLine();
+            Console.Error.WriteLine("Required:");
+            Console.Error.WriteLine("  --owner, -o      Repository owner (user or organization)");
+            Console.Error.WriteLine("  --repo, -r       Repository name");
+            Console.Error.WriteLine("  --pr, -p         Pull request number");
+            Console.Error.WriteLine("  --body, -b       Comment text (or use --body-file)");
+            Console.Error.WriteLine();
+            Console.Error.WriteLine("Optional:");
+            Console.Error.WriteLine("  --body-file, -f  Read comment body from file");
+            return 1;
+        }
+
+        if (!int.TryParse(prNumberStr, out var prNumber))
+        {
+            Console.Error.WriteLine($"Invalid PR number: {prNumberStr}");
+            return 1;
+        }
+
+        // Get body from file if specified
+        var commentBody = body;
+        if (!string.IsNullOrEmpty(bodyFile))
+        {
+            if (!File.Exists(bodyFile))
+            {
+                Console.Error.WriteLine($"File not found: {bodyFile}");
+                return 1;
+            }
+            commentBody = await File.ReadAllTextAsync(bodyFile);
+        }
+
+        if (string.IsNullOrWhiteSpace(commentBody))
+        {
+            Console.Error.WriteLine("Comment body is required. Use --body or --body-file.");
+            return 1;
+        }
+
+        Console.Error.WriteLine($"Adding comment to PR #{prNumber} in {owner}/{repo}...");
+
+        var result = await server.CommentPrCliAsync(owner, repo, prNumber, commentBody);
+        Console.WriteLine(result);
+
+        return 0;
+    }
+
     private static string? GetArgValue(string[] args, string longName, string? shortName = null)
     {
         for (int i = 0; i < args.Length - 1; i++)
@@ -189,6 +247,7 @@ internal static class Program
         Console.WriteLine("COMMANDS:");
         Console.WriteLine("  review    Generate an AI code review for a pull request");
         Console.WriteLine("  list      List pull requests in a repository");
+        Console.WriteLine("  comment   Add a comment to a pull request");
         Console.WriteLine("  help      Show this help message");
         Console.WriteLine("  version   Show version information");
         Console.WriteLine();
@@ -196,6 +255,8 @@ internal static class Program
         Console.WriteLine("  McpPrReviewer review --owner microsoft --repo vscode --pr 12345");
         Console.WriteLine("  McpPrReviewer list --owner microsoft --repo vscode --state open");
         Console.WriteLine("  McpPrReviewer review -o myorg -r myrepo -p 42 --output review.md");
+        Console.WriteLine("  McpPrReviewer comment -o myorg -r myrepo -p 42 --body \"LGTM!\"");
+        Console.WriteLine("  McpPrReviewer comment -o myorg -r myrepo -p 42 --body-file review.md");
         Console.WriteLine();
         Console.WriteLine("ENVIRONMENT VARIABLES:");
         Console.WriteLine("  GITHUB_TOKEN        GitHub API token (required)");
@@ -266,6 +327,17 @@ internal static class Program
             });
 
             return string.Join("\n", lines);
+        }
+
+        public async Task<string> CommentPrCliAsync(string owner, string repo, int prNumber, string body,
+            CancellationToken cancellationToken = default)
+        {
+            var comment = await GitHubPostAsync<GitHubComment>(
+                $"/repos/{owner}/{repo}/issues/{prNumber}/comments",
+                new { body },
+                cancellationToken);
+
+            return $"Comment added successfully: {comment.HtmlUrl}";
         }
 
         public async Task RunAsync(CancellationToken cancellationToken = default)
@@ -378,6 +450,7 @@ internal static class Program
                 {
                     "list_open_prs" => await HandleListOpenPrsAsync(arguments, cancellationToken),
                     "review_pr" => await HandleReviewPrAsync(arguments, cancellationToken),
+                    "comment_pr" => await HandleCommentPrAsync(arguments, cancellationToken),
                     _ => ToolCallResult.Error($"Unknown tool: {toolName}"),
                 };
             }
@@ -415,6 +488,21 @@ internal static class Program
             });
 
             return ToolCallResult.Text(string.Join("\n", lines));
+        }
+
+        private async Task<ToolCallResult> HandleCommentPrAsync(JsonElement arguments, CancellationToken cancellationToken)
+        {
+            var owner = GetRequiredString(arguments, "owner");
+            var repo = GetRequiredString(arguments, "repo");
+            var prNumber = GetRequiredInt(arguments, "pr_number");
+            var body = GetRequiredString(arguments, "body");
+
+            var comment = await GitHubPostAsync<GitHubComment>(
+                $"/repos/{owner}/{repo}/issues/{prNumber}/comments",
+                new { body },
+                cancellationToken);
+
+            return ToolCallResult.Text($"Comment added successfully: {comment.HtmlUrl}");
         }
 
         private async Task<ToolCallResult> HandleReviewPrAsync(JsonElement arguments, CancellationToken cancellationToken)
@@ -643,6 +731,36 @@ internal static class Program
             return data;
         }
 
+        private async Task<T> GitHubPostAsync<T>(string path, object payload, CancellationToken cancellationToken)
+        {
+            var requestUrl = ResolveUrl(_config.GitHubApiBase, path);
+            var jsonPayload = JsonSerializer.Serialize(payload, JsonOptions);
+            
+            using var request = new HttpRequestMessage(HttpMethod.Post, requestUrl);
+            request.Content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+            
+            if (!string.IsNullOrWhiteSpace(_config.GitHubToken))
+            {
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config.GitHubToken);
+            }
+
+            using var response = await _githubHttp.SendAsync(request, cancellationToken);
+            var body = await response.Content.ReadAsStringAsync(cancellationToken);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new InvalidOperationException($"GitHub API error {(int)response.StatusCode}: {body}");
+            }
+
+            var data = JsonSerializer.Deserialize<T>(body, JsonOptions);
+            if (data == null)
+            {
+                throw new InvalidOperationException("Failed to parse GitHub API response.");
+            }
+
+            return data;
+        }
+
         private static string ResolveUrl(string baseUrl, string path)
         {
             var normalized = baseUrl.EndsWith("/", StringComparison.Ordinal) ? baseUrl : $"{baseUrl}/";
@@ -738,6 +856,27 @@ internal static class Program
                         },
                     },
                     ["required"] = new[] { "owner", "repo", "pr_number" },
+                },
+            },
+            new ToolDefinition
+            {
+                Name = "comment_pr",
+                Description = "Add a comment to a pull request.",
+                InputSchema = new Dictionary<string, object?>
+                {
+                    ["type"] = "object",
+                    ["properties"] = new Dictionary<string, object?>
+                    {
+                        ["owner"] = new Dictionary<string, object?> { ["type"] = "string" },
+                        ["repo"] = new Dictionary<string, object?> { ["type"] = "string" },
+                        ["pr_number"] = new Dictionary<string, object?> { ["type"] = "integer" },
+                        ["body"] = new Dictionary<string, object?> 
+                        { 
+                            ["type"] = "string",
+                            ["description"] = "The comment text (supports markdown)",
+                        },
+                    },
+                    ["required"] = new[] { "owner", "repo", "pr_number", "body" },
                 },
             },
         };
@@ -946,6 +1085,15 @@ internal static class Program
         [JsonPropertyName("deletions")] public int Deletions { get; set; }
         [JsonPropertyName("changes")] public int Changes { get; set; }
         [JsonPropertyName("patch")] public string? Patch { get; set; }
+    }
+
+    private sealed class GitHubComment
+    {
+        [JsonPropertyName("id")] public long Id { get; set; }
+        [JsonPropertyName("body")] public string Body { get; set; } = string.Empty;
+        [JsonPropertyName("html_url")] public string HtmlUrl { get; set; } = string.Empty;
+        [JsonPropertyName("user")] public GitHubUser User { get; set; } = new();
+        [JsonPropertyName("created_at")] public string CreatedAt { get; set; } = string.Empty;
     }
 
     private sealed class AnthropicMessageRequest
