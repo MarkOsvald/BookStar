@@ -13,6 +13,9 @@ internal static class Program
 
     public static async Task Main(string[] args)
     {
+        Console.InputEncoding = Encoding.UTF8;
+        Console.OutputEncoding = Encoding.UTF8;
+
         var config = AppConfig.Load();
         var server = new McpServer(config);
         await server.RunAsync();
@@ -30,7 +33,6 @@ internal static class Program
             _githubHttp = new HttpClient();
             _githubHttp.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(ServerName, ServerVersion));
             _githubHttp.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github+json"));
-
             _anthropicHttp = new HttpClient();
         }
 
@@ -42,10 +44,7 @@ internal static class Program
             while (!cancellationToken.IsCancellationRequested)
             {
                 var message = await ReadMessageAsync(input, cancellationToken);
-                if (message is null)
-                {
-                    break;
-                }
+                if (message is null) break;
 
                 await HandleMessageAsync(message.Value, output, cancellationToken);
                 message.Value.Dispose();
@@ -85,41 +84,24 @@ internal static class Program
                             Capabilities = new ServerCapabilities { Tools = new Dictionary<string, object>() },
                             ServerInfo = new ServerInfo { Name = ServerName, Version = ServerVersion },
                         };
-
                         await WriteResultAsync(output, message.Id, result, cancellationToken);
                     }
-
                     return;
                 }
 
-                if (method == "initialized")
-                {
-                    return;
-                }
+                if (method == "initialized") return;
 
                 if (method == "tools/list")
                 {
-                    if (!hasId)
-                    {
-                        return;
-                    }
-
-                    var result = new ToolsListResult
-                    {
-                        Tools = BuildToolDefinitions(),
-                    };
-
+                    if (!hasId) return;
+                    var result = new ToolsListResult { Tools = BuildToolDefinitions() };
                     await WriteResultAsync(output, message.Id, result, cancellationToken);
                     return;
                 }
 
                 if (method == "tools/call")
                 {
-                    if (!hasId)
-                    {
-                        return;
-                    }
-
+                    if (!hasId) return;
                     var toolResult = await HandleToolCallAsync(message.Root, cancellationToken);
                     await WriteResultAsync(output, message.Id, toolResult, cancellationToken);
                     return;
@@ -227,11 +209,7 @@ internal static class Program
         }
 
         private async Task<List<GitHubPullFile>> GetPullFilesAsync(
-            string owner,
-            string repo,
-            int prNumber,
-            int maxFiles,
-            CancellationToken cancellationToken)
+            string owner, string repo, int prNumber, int maxFiles, CancellationToken cancellationToken)
         {
             var files = new List<GitHubPullFile>();
             var page = 1;
@@ -248,17 +226,9 @@ internal static class Program
                     },
                     cancellationToken);
 
-                if (pageFiles.Count == 0)
-                {
-                    break;
-                }
-
+                if (pageFiles.Count == 0) break;
                 files.AddRange(pageFiles);
-                if (pageFiles.Count < perPage)
-                {
-                    break;
-                }
-
+                if (pageFiles.Count < perPage) break;
                 page += 1;
             }
 
@@ -281,11 +251,7 @@ internal static class Program
                     break;
                 }
 
-                if (builder.Length > 0)
-                {
-                    builder.Append("\n\n");
-                }
-
+                if (builder.Length > 0) builder.Append("\n\n");
                 builder.Append(block);
             }
 
@@ -299,7 +265,7 @@ internal static class Program
                 .Select(file => $"- {file.FileName} ({file.Status}, +{file.Additions}/-{file.Deletions})")
                 .ToArray();
 
-            var summaryLines = new List<string>
+            return string.Join("\n", new[]
             {
                 $"PR #{pr.Number}: {pr.Title}",
                 $"Author: {pr.User.Login}",
@@ -309,24 +275,15 @@ internal static class Program
                 "",
                 "Files touched:",
                 fileLines.Length > 0 ? string.Join("\n", fileLines) : "(No files returned by GitHub.)",
-            };
-
-            return string.Join("\n", summaryLines);
+            });
         }
 
-        private string BuildPrompt(
-            GitHubPull pr,
-            List<GitHubPullFile> files,
-            string diffText,
-            bool truncated,
-            string? instructions)
+        private string BuildPrompt(GitHubPull pr, List<GitHubPullFile> files, string diffText, bool truncated, string? instructions)
         {
             var filesSummary = string.Join("\n", files.Select(file =>
                 $"- {file.FileName} ({file.Status}, +{file.Additions}/-{file.Deletions})"));
 
-            var truncationNote = truncated
-                ? "\nNote: The diff was truncated to stay within size limits."
-                : string.Empty;
+            var truncationNote = truncated ? "\nNote: The diff was truncated to stay within size limits." : string.Empty;
 
             var reviewInstructions = string.Join("\n", new[]
             {
@@ -340,11 +297,9 @@ internal static class Program
                 "Only reference files and changes present in the diff context.",
             });
 
-            var extra = string.IsNullOrWhiteSpace(instructions)
-                ? string.Empty
-                : $"\nAdditional instructions:\n{instructions}\n";
+            var extra = string.IsNullOrWhiteSpace(instructions) ? string.Empty : $"\nAdditional instructions:\n{instructions}\n";
 
-            var context = string.Join("\n", new[]
+            return string.Join("\n", new[]
             {
                 $"{reviewInstructions}{extra}",
                 "",
@@ -363,8 +318,6 @@ internal static class Program
                 string.IsNullOrWhiteSpace(diffText) ? "(No diff text returned by GitHub.)" : diffText,
                 "```",
             });
-
-            return context;
         }
 
         private async Task<string> GenerateReviewAsync(string prompt, string fallbackSummary, CancellationToken cancellationToken)
@@ -422,10 +375,7 @@ internal static class Program
             return string.Join("\n", content!);
         }
 
-        private async Task<T> GitHubGetAsync<T>(
-            string path,
-            Dictionary<string, string>? query,
-            CancellationToken cancellationToken)
+        private async Task<T> GitHubGetAsync<T>(string path, Dictionary<string, string>? query, CancellationToken cancellationToken)
         {
             var requestUrl = ResolveUrl(_config.GitHubApiBase, path);
             if (query != null && query.Count > 0)
@@ -463,47 +413,23 @@ internal static class Program
 
         private static string ResolveUrl(string baseUrl, string path)
         {
-            var normalized = baseUrl.EndsWith("/", StringComparison.Ordinal)
-                ? baseUrl
-                : $"{baseUrl}/";
-            var trimmed = path.StartsWith("/", StringComparison.Ordinal)
-                ? path[1..]
-                : path;
+            var normalized = baseUrl.EndsWith("/", StringComparison.Ordinal) ? baseUrl : $"{baseUrl}/";
+            var trimmed = path.StartsWith("/", StringComparison.Ordinal) ? path[1..] : path;
             return new Uri(new Uri(normalized), trimmed).ToString();
         }
 
         private static int? GetOptionalInt(JsonElement args, string propertyName)
         {
-            if (args.ValueKind != JsonValueKind.Object)
-            {
-                return null;
-            }
-
-            if (!args.TryGetProperty(propertyName, out var value))
-            {
-                return null;
-            }
-
-            if (value.ValueKind == JsonValueKind.Number && value.TryGetInt32(out var number))
-            {
-                return number;
-            }
-
+            if (args.ValueKind != JsonValueKind.Object) return null;
+            if (!args.TryGetProperty(propertyName, out var value)) return null;
+            if (value.ValueKind == JsonValueKind.Number && value.TryGetInt32(out var number)) return number;
             return null;
         }
 
         private static string? GetOptionalString(JsonElement args, string propertyName)
         {
-            if (args.ValueKind != JsonValueKind.Object)
-            {
-                return null;
-            }
-
-            if (!args.TryGetProperty(propertyName, out var value))
-            {
-                return null;
-            }
-
+            if (args.ValueKind != JsonValueKind.Object) return null;
+            if (!args.TryGetProperty(propertyName, out var value)) return null;
             return value.ValueKind == JsonValueKind.String ? value.GetString() : null;
         }
 
@@ -511,10 +437,7 @@ internal static class Program
         {
             var value = GetOptionalString(args, propertyName);
             if (string.IsNullOrWhiteSpace(value))
-            {
                 throw new InvalidOperationException($"Missing required argument: {propertyName}");
-            }
-
             return value;
         }
 
@@ -522,113 +445,96 @@ internal static class Program
         {
             var value = GetOptionalInt(args, propertyName);
             if (value is null)
-            {
                 throw new InvalidOperationException($"Missing required argument: {propertyName}");
-            }
-
             return value.Value;
         }
 
-        private static List<ToolDefinition> BuildToolDefinitions()
+        private static List<ToolDefinition> BuildToolDefinitions() => new()
         {
-            return new List<ToolDefinition>
+            new ToolDefinition
             {
-                new ToolDefinition
+                Name = "list_open_prs",
+                Description = "List pull requests for a repository.",
+                InputSchema = new Dictionary<string, object?>
                 {
-                    Name = "list_open_prs",
-                    Description = "List pull requests for a repository.",
-                    InputSchema = new Dictionary<string, object?>
+                    ["type"] = "object",
+                    ["properties"] = new Dictionary<string, object?>
                     {
-                        ["type"] = "object",
-                        ["properties"] = new Dictionary<string, object?>
+                        ["owner"] = new Dictionary<string, object?> { ["type"] = "string" },
+                        ["repo"] = new Dictionary<string, object?> { ["type"] = "string" },
+                        ["state"] = new Dictionary<string, object?>
                         {
-                            ["owner"] = new Dictionary<string, object?> { ["type"] = "string" },
-                            ["repo"] = new Dictionary<string, object?> { ["type"] = "string" },
-                            ["state"] = new Dictionary<string, object?>
-                            {
-                                ["type"] = "string",
-                                ["enum"] = new[] { "open", "closed", "all" },
-                                ["default"] = "open",
-                            },
-                            ["limit"] = new Dictionary<string, object?>
-                            {
-                                ["type"] = "integer",
-                                ["minimum"] = 1,
-                                ["maximum"] = 100,
-                                ["default"] = 20,
-                            },
+                            ["type"] = "string",
+                            ["enum"] = new[] { "open", "closed", "all" },
+                            ["default"] = "open",
                         },
-                        ["required"] = new[] { "owner", "repo" },
+                        ["limit"] = new Dictionary<string, object?>
+                        {
+                            ["type"] = "integer",
+                            ["minimum"] = 1,
+                            ["maximum"] = 100,
+                            ["default"] = 20,
+                        },
                     },
+                    ["required"] = new[] { "owner", "repo" },
                 },
-                new ToolDefinition
+            },
+            new ToolDefinition
+            {
+                Name = "review_pr",
+                Description = "Fetch a PR diff and generate a review with Claude.",
+                InputSchema = new Dictionary<string, object?>
                 {
-                    Name = "review_pr",
-                    Description = "Fetch a PR diff and generate a review with Claude.",
-                    InputSchema = new Dictionary<string, object?>
+                    ["type"] = "object",
+                    ["properties"] = new Dictionary<string, object?>
                     {
-                        ["type"] = "object",
-                        ["properties"] = new Dictionary<string, object?>
+                        ["owner"] = new Dictionary<string, object?> { ["type"] = "string" },
+                        ["repo"] = new Dictionary<string, object?> { ["type"] = "string" },
+                        ["pr_number"] = new Dictionary<string, object?> { ["type"] = "integer" },
+                        ["instructions"] = new Dictionary<string, object?> { ["type"] = "string" },
+                        ["max_files"] = new Dictionary<string, object?>
                         {
-                            ["owner"] = new Dictionary<string, object?> { ["type"] = "string" },
-                            ["repo"] = new Dictionary<string, object?> { ["type"] = "string" },
-                            ["pr_number"] = new Dictionary<string, object?> { ["type"] = "integer" },
-                            ["instructions"] = new Dictionary<string, object?> { ["type"] = "string" },
-                            ["max_files"] = new Dictionary<string, object?>
-                            {
-                                ["type"] = "integer",
-                                ["minimum"] = 1,
-                                ["maximum"] = 300,
-                            },
-                            ["max_chars"] = new Dictionary<string, object?>
-                            {
-                                ["type"] = "integer",
-                                ["minimum"] = 1000,
-                                ["maximum"] = 400000,
-                            },
+                            ["type"] = "integer",
+                            ["minimum"] = 1,
+                            ["maximum"] = 300,
                         },
-                        ["required"] = new[] { "owner", "repo", "pr_number" },
+                        ["max_chars"] = new Dictionary<string, object?>
+                        {
+                            ["type"] = "integer",
+                            ["minimum"] = 1000,
+                            ["maximum"] = 400000,
+                        },
                     },
+                    ["required"] = new[] { "owner", "repo", "pr_number" },
                 },
-            };
-        }
+            },
+        };
     }
 
     private static async Task<RpcMessage?> ReadMessageAsync(Stream input, CancellationToken cancellationToken)
     {
-        var headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        while (true)
+        var line = await ReadLineAsync(input, cancellationToken);
+        if (line == null) return null;
+        if (string.IsNullOrWhiteSpace(line)) return await ReadMessageAsync(input, cancellationToken);
+
+        // Check if this is Content-Length header (LSP format) or raw JSON (NDJSON format)
+        if (line.StartsWith("Content-Length:", StringComparison.OrdinalIgnoreCase))
         {
-            var line = await ReadLineAsync(input, cancellationToken);
-            if (line == null)
-            {
-                return null;
-            }
-
-            if (line.Length == 0)
-            {
-                break;
-            }
-
-            var separator = line.IndexOf(':');
-            if (separator > 0)
-            {
-                var name = line[..separator].Trim();
-                var value = line[(separator + 1)..].Trim();
-                headers[name] = value;
-            }
+            var lengthStr = line.Substring("Content-Length:".Length).Trim();
+            if (!int.TryParse(lengthStr, out var contentLength) || contentLength <= 0) return null;
+            await ReadLineAsync(input, cancellationToken); // blank line
+            var payload = await ReadExactlyAsync(input, contentLength, cancellationToken);
+            return new RpcMessage(JsonDocument.Parse(payload));
         }
-
-        if (!headers.TryGetValue("Content-Length", out var lengthValue) ||
-            !int.TryParse(lengthValue, out var contentLength) ||
-            contentLength <= 0)
+        else if (line.StartsWith("{"))
         {
-            return null;
+            // NDJSON format: raw JSON per line (what Cursor uses)
+            return new RpcMessage(JsonDocument.Parse(line));
         }
-
-        var payload = await ReadExactlyAsync(input, contentLength, cancellationToken);
-        var document = JsonDocument.Parse(payload);
-        return new RpcMessage(document);
+        else
+        {
+            return await ReadMessageAsync(input, cancellationToken);
+        }
     }
 
     private static async Task<string?> ReadLineAsync(Stream input, CancellationToken cancellationToken)
@@ -639,29 +545,12 @@ internal static class Program
         while (true)
         {
             var read = await input.ReadAsync(single.AsMemory(0, 1), cancellationToken);
-            if (read == 0)
-            {
-                if (buffer.Count == 0)
-                {
-                    return null;
-                }
-
-                break;
-            }
-
-            var value = single[0];
-            if (value == '\n')
-            {
-                break;
-            }
-
-            if (value != '\r')
-            {
-                buffer.Add(value);
-            }
+            if (read == 0) return buffer.Count == 0 ? null : Encoding.UTF8.GetString(buffer.ToArray());
+            if (single[0] == '\n') break;
+            if (single[0] != '\r') buffer.Add(single[0]);
         }
 
-        return Encoding.ASCII.GetString(buffer.ToArray());
+        return Encoding.UTF8.GetString(buffer.ToArray());
     }
 
     private static async Task<byte[]> ReadExactlyAsync(Stream input, int length, CancellationToken cancellationToken)
@@ -671,47 +560,27 @@ internal static class Program
         while (offset < length)
         {
             var read = await input.ReadAsync(buffer.AsMemory(offset, length - offset), cancellationToken);
-            if (read == 0)
-            {
-                throw new EndOfStreamException("Unexpected end of stream.");
-            }
-
+            if (read == 0) throw new EndOfStreamException("Unexpected end of stream.");
             offset += read;
         }
-
         return buffer;
     }
 
     private static async Task WriteResultAsync<T>(Stream output, JsonElement id, T result, CancellationToken cancellationToken)
     {
-        var payload = new RpcResponse<T>
-        {
-            Jsonrpc = "2.0",
-            Id = id,
-            Result = result,
-        };
-
-        await WriteMessageAsync(output, payload, cancellationToken);
+        await WriteMessageAsync(output, new RpcResponse<T> { Jsonrpc = "2.0", Id = id, Result = result }, cancellationToken);
     }
 
     private static async Task WriteErrorAsync(Stream output, JsonElement id, int code, string message, CancellationToken cancellationToken)
     {
-        var payload = new RpcErrorResponse
-        {
-            Jsonrpc = "2.0",
-            Id = id,
-            Error = new RpcError { Code = code, Message = message },
-        };
-
-        await WriteMessageAsync(output, payload, cancellationToken);
+        await WriteMessageAsync(output, new RpcErrorResponse { Jsonrpc = "2.0", Id = id, Error = new RpcError { Code = code, Message = message } }, cancellationToken);
     }
 
     private static async Task WriteMessageAsync<T>(Stream output, T payload, CancellationToken cancellationToken)
     {
         var json = JsonSerializer.SerializeToUtf8Bytes(payload, JsonOptions);
-        var header = Encoding.ASCII.GetBytes($"Content-Length: {json.Length}\r\n\r\n");
-        await output.WriteAsync(header, cancellationToken);
         await output.WriteAsync(json, cancellationToken);
+        await output.WriteAsync("\n"u8.ToArray(), cancellationToken);
         await output.FlushAsync(cancellationToken);
     }
 
@@ -743,9 +612,7 @@ internal static class Program
 
         public static AppConfig Load()
         {
-            // Try to load from appsettings.local.json first
             var localSettings = LoadLocalSettings();
-
             return new AppConfig
             {
                 GitHubToken = localSettings?.GitHub?.Token ?? GetEnv("GITHUB_TOKEN"),
@@ -762,7 +629,6 @@ internal static class Program
 
         private static LocalSettings? LoadLocalSettings()
         {
-            // Look for appsettings.local.json next to the executable or in the current directory
             var paths = new[]
             {
                 Path.Combine(AppContext.BaseDirectory, "appsettings.local.json"),
@@ -776,32 +642,19 @@ internal static class Program
                     try
                     {
                         var json = File.ReadAllText(path);
-                        return JsonSerializer.Deserialize<LocalSettings>(json, new JsonSerializerOptions
-                        {
-                            PropertyNameCaseInsensitive = true,
-                        });
+                        return JsonSerializer.Deserialize<LocalSettings>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
                     }
-                    catch
-                    {
-                        // Ignore parse errors, fall back to env vars
-                    }
+                    catch { }
                 }
             }
-
             return null;
         }
 
-        private static string GetEnv(string key, string defaultValue = "")
-        {
-            var value = Environment.GetEnvironmentVariable(key);
-            return string.IsNullOrWhiteSpace(value) ? defaultValue : value;
-        }
+        private static string GetEnv(string key, string defaultValue = "") =>
+            Environment.GetEnvironmentVariable(key) is { Length: > 0 } value ? value : defaultValue;
 
-        private static int GetEnvInt(string key, int defaultValue)
-        {
-            var value = Environment.GetEnvironmentVariable(key);
-            return int.TryParse(value, out var result) ? result : defaultValue;
-        }
+        private static int GetEnvInt(string key, int defaultValue) =>
+            int.TryParse(Environment.GetEnvironmentVariable(key), out var result) ? result : defaultValue;
     }
 
     private sealed class LocalSettings
@@ -811,215 +664,68 @@ internal static class Program
         public ReviewSettings? Review { get; set; }
     }
 
-    private sealed class GitHubSettings
-    {
-        public string? Token { get; set; }
-    }
+    private sealed class GitHubSettings { public string? Token { get; set; } }
+    private sealed class AnthropicSettings { public string? ApiKey { get; set; } public string? Model { get; set; } public string? Version { get; set; } public string? BaseUrl { get; set; } }
+    private sealed class ReviewSettings { public int? MaxChars { get; set; } public int? MaxFiles { get; set; } public int? MaxTokens { get; set; } }
 
-    private sealed class AnthropicSettings
-    {
-        public string? ApiKey { get; set; }
-        public string? Model { get; set; }
-        public string? Version { get; set; }
-        public string? BaseUrl { get; set; }
-    }
-
-    private sealed class ReviewSettings
-    {
-        public int? MaxChars { get; set; }
-        public int? MaxFiles { get; set; }
-        public int? MaxTokens { get; set; }
-    }
-
-    private sealed class ToolDefinition
-    {
-        public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public Dictionary<string, object?> InputSchema { get; set; } = new();
-    }
-
-    private sealed class ToolsListResult
-    {
-        public List<ToolDefinition> Tools { get; set; } = new();
-    }
-
-    private sealed class InitializeResult
-    {
-        public string ProtocolVersion { get; set; } = DefaultProtocolVersion;
-        public ServerCapabilities Capabilities { get; set; } = new();
-        public ServerInfo ServerInfo { get; set; } = new();
-    }
-
-    private sealed class ServerCapabilities
-    {
-        public Dictionary<string, object> Tools { get; set; } = new();
-    }
-
-    private sealed class ServerInfo
-    {
-        public string Name { get; set; } = string.Empty;
-        public string Version { get; set; } = string.Empty;
-    }
+    private sealed class ToolDefinition { public string Name { get; set; } = string.Empty; public string Description { get; set; } = string.Empty; public Dictionary<string, object?> InputSchema { get; set; } = new(); }
+    private sealed class ToolsListResult { public List<ToolDefinition> Tools { get; set; } = new(); }
+    private sealed class InitializeResult { public string ProtocolVersion { get; set; } = DefaultProtocolVersion; public ServerCapabilities Capabilities { get; set; } = new(); public ServerInfo ServerInfo { get; set; } = new(); }
+    private sealed class ServerCapabilities { public Dictionary<string, object> Tools { get; set; } = new(); }
+    private sealed class ServerInfo { public string Name { get; set; } = string.Empty; public string Version { get; set; } = string.Empty; }
 
     private sealed class ToolCallResult
     {
         public List<ContentItem> Content { get; set; } = new();
         public bool? IsError { get; set; }
-
-        public static ToolCallResult Text(string text)
-        {
-            return new ToolCallResult
-            {
-                Content = new List<ContentItem> { new() { Type = "text", Text = text } },
-            };
-        }
-
-        public static ToolCallResult Error(string message)
-        {
-            return new ToolCallResult
-            {
-                IsError = true,
-                Content = new List<ContentItem> { new() { Type = "text", Text = message } },
-            };
-        }
+        public static ToolCallResult Text(string text) => new() { Content = new List<ContentItem> { new() { Type = "text", Text = text } } };
+        public static ToolCallResult Error(string message) => new() { IsError = true, Content = new List<ContentItem> { new() { Type = "text", Text = message } } };
     }
 
-    private sealed class ContentItem
-    {
-        public string Type { get; set; } = "text";
-        public string Text { get; set; } = string.Empty;
-    }
-
-    private sealed class RpcResponse<T>
-    {
-        public string Jsonrpc { get; set; } = "2.0";
-        public JsonElement Id { get; set; }
-        public T? Result { get; set; }
-    }
-
-    private sealed class RpcErrorResponse
-    {
-        public string Jsonrpc { get; set; } = "2.0";
-        public JsonElement Id { get; set; }
-        public RpcError Error { get; set; } = new();
-    }
-
-    private sealed class RpcError
-    {
-        public int Code { get; set; }
-        public string Message { get; set; } = string.Empty;
-    }
-
+    private sealed class ContentItem { public string Type { get; set; } = "text"; public string Text { get; set; } = string.Empty; }
+    private sealed class RpcResponse<T> { public string Jsonrpc { get; set; } = "2.0"; public JsonElement Id { get; set; } public T? Result { get; set; } }
+    private sealed class RpcErrorResponse { public string Jsonrpc { get; set; } = "2.0"; public JsonElement Id { get; set; } public RpcError Error { get; set; } = new(); }
+    private sealed class RpcError { public int Code { get; set; } public string Message { get; set; } = string.Empty; }
     private sealed record DiffResult(string DiffText, bool Truncated);
 
-    private sealed class GitHubUser
-    {
-        [JsonPropertyName("login")]
-        public string Login { get; set; } = string.Empty;
-    }
-
-    private sealed class GitHubRef
-    {
-        [JsonPropertyName("ref")]
-        public string Ref { get; set; } = string.Empty;
-    }
+    private sealed class GitHubUser { [JsonPropertyName("login")] public string Login { get; set; } = string.Empty; }
+    private sealed class GitHubRef { [JsonPropertyName("ref")] public string Ref { get; set; } = string.Empty; }
 
     private sealed class GitHubPull
     {
-        [JsonPropertyName("number")]
-        public int Number { get; set; }
-
-        [JsonPropertyName("title")]
-        public string Title { get; set; } = string.Empty;
-
-        [JsonPropertyName("body")]
-        public string? Body { get; set; }
-
-        [JsonPropertyName("state")]
-        public string State { get; set; } = string.Empty;
-
-        [JsonPropertyName("html_url")]
-        public string HtmlUrl { get; set; } = string.Empty;
-
-        [JsonPropertyName("user")]
-        public GitHubUser User { get; set; } = new();
-
-        [JsonPropertyName("base")]
-        public GitHubRef Base { get; set; } = new();
-
-        [JsonPropertyName("head")]
-        public GitHubRef Head { get; set; } = new();
-
-        [JsonPropertyName("additions")]
-        public int Additions { get; set; }
-
-        [JsonPropertyName("deletions")]
-        public int Deletions { get; set; }
-
-        [JsonPropertyName("changed_files")]
-        public int ChangedFiles { get; set; }
+        [JsonPropertyName("number")] public int Number { get; set; }
+        [JsonPropertyName("title")] public string Title { get; set; } = string.Empty;
+        [JsonPropertyName("body")] public string? Body { get; set; }
+        [JsonPropertyName("state")] public string State { get; set; } = string.Empty;
+        [JsonPropertyName("html_url")] public string HtmlUrl { get; set; } = string.Empty;
+        [JsonPropertyName("user")] public GitHubUser User { get; set; } = new();
+        [JsonPropertyName("base")] public GitHubRef Base { get; set; } = new();
+        [JsonPropertyName("head")] public GitHubRef Head { get; set; } = new();
+        [JsonPropertyName("additions")] public int Additions { get; set; }
+        [JsonPropertyName("deletions")] public int Deletions { get; set; }
+        [JsonPropertyName("changed_files")] public int ChangedFiles { get; set; }
     }
 
     private sealed class GitHubPullFile
     {
-        [JsonPropertyName("filename")]
-        public string FileName { get; set; } = string.Empty;
-
-        [JsonPropertyName("status")]
-        public string Status { get; set; } = string.Empty;
-
-        [JsonPropertyName("additions")]
-        public int Additions { get; set; }
-
-        [JsonPropertyName("deletions")]
-        public int Deletions { get; set; }
-
-        [JsonPropertyName("changes")]
-        public int Changes { get; set; }
-
-        [JsonPropertyName("patch")]
-        public string? Patch { get; set; }
+        [JsonPropertyName("filename")] public string FileName { get; set; } = string.Empty;
+        [JsonPropertyName("status")] public string Status { get; set; } = string.Empty;
+        [JsonPropertyName("additions")] public int Additions { get; set; }
+        [JsonPropertyName("deletions")] public int Deletions { get; set; }
+        [JsonPropertyName("changes")] public int Changes { get; set; }
+        [JsonPropertyName("patch")] public string? Patch { get; set; }
     }
 
     private sealed class AnthropicMessageRequest
     {
-        [JsonPropertyName("model")]
-        public string Model { get; set; } = string.Empty;
-
-        [JsonPropertyName("max_tokens")]
-        public int MaxTokens { get; set; }
-
-        [JsonPropertyName("temperature")]
-        public double Temperature { get; set; }
-
-        [JsonPropertyName("system")]
-        public string System { get; set; } = string.Empty;
-
-        [JsonPropertyName("messages")]
-        public List<AnthropicMessage> Messages { get; set; } = new();
+        [JsonPropertyName("model")] public string Model { get; set; } = string.Empty;
+        [JsonPropertyName("max_tokens")] public int MaxTokens { get; set; }
+        [JsonPropertyName("temperature")] public double Temperature { get; set; }
+        [JsonPropertyName("system")] public string System { get; set; } = string.Empty;
+        [JsonPropertyName("messages")] public List<AnthropicMessage> Messages { get; set; } = new();
     }
 
-    private sealed class AnthropicMessage
-    {
-        [JsonPropertyName("role")]
-        public string Role { get; set; } = string.Empty;
-
-        [JsonPropertyName("content")]
-        public string Content { get; set; } = string.Empty;
-    }
-
-    private sealed class AnthropicMessageResponse
-    {
-        [JsonPropertyName("content")]
-        public List<AnthropicContent>? Content { get; set; }
-    }
-
-    private sealed class AnthropicContent
-    {
-        [JsonPropertyName("type")]
-        public string Type { get; set; } = string.Empty;
-
-        [JsonPropertyName("text")]
-        public string? Text { get; set; }
-    }
+    private sealed class AnthropicMessage { [JsonPropertyName("role")] public string Role { get; set; } = string.Empty; [JsonPropertyName("content")] public string Content { get; set; } = string.Empty; }
+    private sealed class AnthropicMessageResponse { [JsonPropertyName("content")] public List<AnthropicContent>? Content { get; set; } }
+    private sealed class AnthropicContent { [JsonPropertyName("type")] public string Type { get; set; } = string.Empty; [JsonPropertyName("text")] public string? Text { get; set; } }
 }
