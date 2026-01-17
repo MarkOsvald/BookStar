@@ -187,6 +187,17 @@ When run without arguments, it starts as an MCP server (stdin/stdout JSON-RPC).
 
 ---
 
+## Customizing Review Instructions
+
+The review prompt can be customized by editing `review-template.md` in the app directory. This file controls:
+- What the AI reviewer focuses on (correctness, security, performance, etc.)
+- The output format and sections (Summary, Findings, Suggestions, Tests)
+- Severity tags and their meanings ([blocker], [major], [minor], [nit])
+
+If the template file is missing or empty, default instructions are used.
+
+---
+
 ## Notes
 
 - Large PRs are automatically truncated using `max_chars` and `max_files` settings
