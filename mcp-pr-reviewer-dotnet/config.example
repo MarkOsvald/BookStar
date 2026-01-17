@@ -1,0 +1,12 @@
+GITHUB_TOKEN=ghp_your_token_here
+GITHUB_API_BASE=https://api.github.com
+
+ANTHROPIC_API_KEY=your_anthropic_key_here
+ANTHROPIC_BASE_URL=https://api.anthropic.com/v1
+ANTHROPIC_VERSION=2023-06-01
+ANTHROPIC_MODEL=claude-sonnet-4-20250514
+
+# Limits to keep reviews manageable.
+REVIEW_MAX_CHARS=120000
+REVIEW_MAX_FILES=100
+REVIEW_MAX_TOKENS=1200
