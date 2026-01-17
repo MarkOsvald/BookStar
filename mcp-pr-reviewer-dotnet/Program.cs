@@ -18,7 +18,191 @@ internal static class Program
 
         var config = AppConfig.Load();
         var server = new McpServer(config);
+
+        // CLI mode: detect command-line arguments
+        if (args.Length > 0)
+        {
+            var exitCode = await RunCliAsync(args, server);
+            Environment.Exit(exitCode);
+            return;
+        }
+
+        // Default: MCP protocol mode (stdin/stdout JSON-RPC)
         await server.RunAsync();
+    }
+
+    private static async Task<int> RunCliAsync(string[] args, McpServer server)
+    {
+        var command = args[0].ToLowerInvariant();
+
+        try
+        {
+            switch (command)
+            {
+                case "review":
+                    return await RunReviewCommandAsync(args, server);
+
+                case "list":
+                    return await RunListCommandAsync(args, server);
+
+                case "help":
+                case "--help":
+                case "-h":
+                    PrintHelp();
+                    return 0;
+
+                case "version":
+                case "--version":
+                case "-v":
+                    Console.WriteLine($"{ServerName} v{ServerVersion}");
+                    return 0;
+
+                default:
+                    Console.Error.WriteLine($"Unknown command: {command}");
+                    Console.Error.WriteLine("Use 'help' to see available commands.");
+                    return 1;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"Error: {ex.Message}");
+            return 1;
+        }
+    }
+
+    private static async Task<int> RunReviewCommandAsync(string[] args, McpServer server)
+    {
+        var owner = GetArgValue(args, "--owner", "-o");
+        var repo = GetArgValue(args, "--repo", "-r");
+        var prNumberStr = GetArgValue(args, "--pr", "-p");
+        var instructions = GetArgValue(args, "--instructions", "-i");
+        var maxFilesStr = GetArgValue(args, "--max-files");
+        var maxCharsStr = GetArgValue(args, "--max-chars");
+        var outputFile = GetArgValue(args, "--output", "-O");
+
+        if (string.IsNullOrEmpty(owner) || string.IsNullOrEmpty(repo) || string.IsNullOrEmpty(prNumberStr))
+        {
+            Console.Error.WriteLine("Usage: review --owner <owner> --repo <repo> --pr <number> [options]");
+            Console.Error.WriteLine();
+            Console.Error.WriteLine("Required:");
+            Console.Error.WriteLine("  --owner, -o    Repository owner (user or organization)");
+            Console.Error.WriteLine("  --repo, -r     Repository name");
+            Console.Error.WriteLine("  --pr, -p       Pull request number");
+            Console.Error.WriteLine();
+            Console.Error.WriteLine("Optional:");
+            Console.Error.WriteLine("  --instructions, -i   Additional review instructions");
+            Console.Error.WriteLine("  --max-files          Maximum files to include (default: 100)");
+            Console.Error.WriteLine("  --max-chars          Maximum diff characters (default: 120000)");
+            Console.Error.WriteLine("  --output, -O         Write output to file instead of stdout");
+            return 1;
+        }
+
+        if (!int.TryParse(prNumberStr, out var prNumber))
+        {
+            Console.Error.WriteLine($"Invalid PR number: {prNumberStr}");
+            return 1;
+        }
+
+        int? maxFiles = int.TryParse(maxFilesStr, out var mf) ? mf : null;
+        int? maxChars = int.TryParse(maxCharsStr, out var mc) ? mc : null;
+
+        Console.Error.WriteLine($"Reviewing PR #{prNumber} in {owner}/{repo}...");
+
+        var result = await server.ReviewPrCliAsync(owner, repo, prNumber, instructions, maxFiles, maxChars);
+
+        if (!string.IsNullOrEmpty(outputFile))
+        {
+            await File.WriteAllTextAsync(outputFile, result);
+            Console.Error.WriteLine($"Review written to: {outputFile}");
+        }
+        else
+        {
+            Console.WriteLine(result);
+        }
+
+        return 0;
+    }
+
+    private static async Task<int> RunListCommandAsync(string[] args, McpServer server)
+    {
+        var owner = GetArgValue(args, "--owner", "-o");
+        var repo = GetArgValue(args, "--repo", "-r");
+        var state = GetArgValue(args, "--state", "-s") ?? "open";
+        var limitStr = GetArgValue(args, "--limit", "-l");
+
+        if (string.IsNullOrEmpty(owner) || string.IsNullOrEmpty(repo))
+        {
+            Console.Error.WriteLine("Usage: list --owner <owner> --repo <repo> [options]");
+            Console.Error.WriteLine();
+            Console.Error.WriteLine("Required:");
+            Console.Error.WriteLine("  --owner, -o    Repository owner (user or organization)");
+            Console.Error.WriteLine("  --repo, -r     Repository name");
+            Console.Error.WriteLine();
+            Console.Error.WriteLine("Optional:");
+            Console.Error.WriteLine("  --state, -s    PR state: open, closed, all (default: open)");
+            Console.Error.WriteLine("  --limit, -l    Maximum PRs to list (default: 20)");
+            return 1;
+        }
+
+        int limit = int.TryParse(limitStr, out var lim) ? lim : 20;
+
+        var result = await server.ListPrsCliAsync(owner, repo, state, limit);
+        Console.WriteLine(result);
+
+        return 0;
+    }
+
+    private static string? GetArgValue(string[] args, string longName, string? shortName = null)
+    {
+        for (int i = 0; i < args.Length - 1; i++)
+        {
+            // Long names are case-insensitive, short names are case-sensitive
+            if (args[i].Equals(longName, StringComparison.OrdinalIgnoreCase) ||
+                (shortName != null && args[i].Equals(shortName, StringComparison.Ordinal)))
+            {
+                return args[i + 1];
+            }
+
+            // Support --arg=value format
+            if (args[i].StartsWith($"{longName}=", StringComparison.OrdinalIgnoreCase))
+            {
+                return args[i].Substring(longName.Length + 1);
+            }
+            if (shortName != null && args[i].StartsWith($"{shortName}=", StringComparison.Ordinal))
+            {
+                return args[i].Substring(shortName.Length + 1);
+            }
+        }
+        return null;
+    }
+
+    private static void PrintHelp()
+    {
+        Console.WriteLine($"{ServerName} v{ServerVersion}");
+        Console.WriteLine();
+        Console.WriteLine("A PR review tool powered by Claude. Can run as MCP server or CLI.");
+        Console.WriteLine();
+        Console.WriteLine("USAGE:");
+        Console.WriteLine("  McpPrReviewer                    Run as MCP server (stdin/stdout)");
+        Console.WriteLine("  McpPrReviewer <command> [args]   Run CLI command");
+        Console.WriteLine();
+        Console.WriteLine("COMMANDS:");
+        Console.WriteLine("  review    Generate an AI code review for a pull request");
+        Console.WriteLine("  list      List pull requests in a repository");
+        Console.WriteLine("  help      Show this help message");
+        Console.WriteLine("  version   Show version information");
+        Console.WriteLine();
+        Console.WriteLine("EXAMPLES:");
+        Console.WriteLine("  McpPrReviewer review --owner microsoft --repo vscode --pr 12345");
+        Console.WriteLine("  McpPrReviewer list --owner microsoft --repo vscode --state open");
+        Console.WriteLine("  McpPrReviewer review -o myorg -r myrepo -p 42 --output review.md");
+        Console.WriteLine();
+        Console.WriteLine("ENVIRONMENT VARIABLES:");
+        Console.WriteLine("  GITHUB_TOKEN        GitHub API token (required)");
+        Console.WriteLine("  ANTHROPIC_API_KEY   Anthropic API key (required for AI reviews)");
+        Console.WriteLine("  ANTHROPIC_MODEL     Model to use (default: claude-sonnet-4-20250514)");
+        Console.WriteLine();
+        Console.WriteLine("Or configure via appsettings.local.json in the app directory.");
     }
 
     private sealed class McpServer
@@ -34,6 +218,54 @@ internal static class Program
             _githubHttp.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(ServerName, ServerVersion));
             _githubHttp.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github+json"));
             _anthropicHttp = new HttpClient();
+        }
+
+        // CLI entry points for direct invocation
+        public async Task<string> ReviewPrCliAsync(string owner, string repo, int prNumber, 
+            string? instructions = null, int? maxFiles = null, int? maxChars = null, 
+            CancellationToken cancellationToken = default)
+        {
+            var effectiveMaxFiles = maxFiles ?? _config.ReviewMaxFiles;
+            var effectiveMaxChars = maxChars ?? _config.ReviewMaxChars;
+
+            var pr = await GitHubGetAsync<GitHubPull>(
+                $"/repos/{owner}/{repo}/pulls/{prNumber}",
+                null,
+                cancellationToken);
+
+            var files = await GetPullFilesAsync(owner, repo, prNumber, effectiveMaxFiles, cancellationToken);
+            var diff = BuildDiff(files, effectiveMaxChars);
+            var summary = BuildSummary(pr, files, effectiveMaxFiles);
+            var prompt = BuildPrompt(pr, files, diff.DiffText, diff.Truncated, instructions);
+            var review = await GenerateReviewAsync(prompt, summary, cancellationToken);
+
+            return review;
+        }
+
+        public async Task<string> ListPrsCliAsync(string owner, string repo, string state = "open", 
+            int limit = 20, CancellationToken cancellationToken = default)
+        {
+            var prs = await GitHubGetAsync<List<GitHubPull>>(
+                $"/repos/{owner}/{repo}/pulls",
+                new Dictionary<string, string>
+                {
+                    ["state"] = state,
+                    ["per_page"] = limit.ToString(),
+                },
+                cancellationToken);
+
+            if (prs.Count == 0)
+            {
+                return "No pull requests found.";
+            }
+
+            var lines = prs.Select(pr =>
+            {
+                var title = string.Join(" ", pr.Title.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
+                return $"#{pr.Number} {title} ({pr.State}) - {pr.HtmlUrl}";
+            });
+
+            return string.Join("\n", lines);
         }
 
         public async Task RunAsync(CancellationToken cancellationToken = default)

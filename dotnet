@@ -1,0 +1,16 @@
+## Summary
+
+The PR fixes an issue in the `BitArray.LeftShift` method where it was not clearing the unused high bits in the most significant storage element after shifting. This caused the `PopCount` method to return incorrect values when bits were shifted out of range.
+
+## Findings
+
+- [major] The `BitArray.LeftShift` method did not properly clear the unused high bits after shifting, leading to incorrect `PopCount` results.
+- [minor] The PR adds a regression test `LeftShift_PopCountReturnsCorrectCount` to ensure the issue is fixed.
+
+## Suggestions
+
+No additional suggestions.
+
+## Tests
+
+The PR includes a new regression test `LeftShift_PopCountReturnsCorrectCount` that verifies the `PopCount` method returns the correct value after calling `LeftShift`.
