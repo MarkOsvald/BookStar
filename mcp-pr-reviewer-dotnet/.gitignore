@@ -1,0 +1,10 @@
+# Local settings with secrets - never commit
+appsettings.local.json
+
+# Build outputs
+bin/
+obj/
+
+# IDE
+.vs/
+*.user
